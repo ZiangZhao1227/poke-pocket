@@ -1,7 +1,7 @@
 # PokePocket
 PokePocket application is based on the Kotlin language, which will call the Pokemon API to display information about all the Pokemon. We will also develop further to make Pokemon appear randomly on the map, and related AR functions.
 ## Tech stack & Open-source libraries
-- Minimum SDK level 24
+- Minimum SDK level 23
 - [Kotlin](https://kotlinlang.org/) based, [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
 - Hilt (alpha) for dependency injection.
 - JetPack
