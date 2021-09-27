@@ -11,6 +11,7 @@
     <string name="pokemon_image">Pokemon Image</string>
     <string name="pokemon_name">pokemon name</string>
     <string name="splash_screen">Splash screen is launching</string>
+    <string name="title_activity_maps">MapsActivity</string>
     <string name="pokemon_health_value">pokemon health value</string>
     <string name="pokemon_attack_value">pokemon attack value</string>
     <string name="pokemon_defense_value">pokemon defense value</string>
@@ -21,4 +22,5 @@
     <string name="attack_value_bar">attack value bar</string>
     <string name="health_value_bar">health value bar</string>
     <string name="enter_a_pokemon">Please enter a pokemon name here</string>
+
 </resources>
