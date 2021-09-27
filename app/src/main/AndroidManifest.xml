@@ -34,6 +34,11 @@
             android:name=".view.ui.main.MapsActivity"
             android:exported="true"
             android:label="@string/title_activity_maps" />
+
+        <activity
+            android:name=".view.ui.main.DetailActivity"
+            android:exported="true" />
+
         <activity
             android:name=".view.ui.main.SplashScreenActivity"
             android:exported="true"
@@ -45,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.ui.main.MainActivity"
+            androi:name=".view.ui.main.MainActivity"
             android:exported="true"></activity>
     </application>
 
