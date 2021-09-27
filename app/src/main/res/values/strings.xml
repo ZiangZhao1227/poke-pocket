@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">poke_Pocket</string>
+    <string name="enter_a_pokemon">Please enter a pokemon name here</string>
     <string name="splash_screen">Splash screen is launching</string>
+    <string name="pokemon_image">Pokemon Image</string>
+    <string name="pokemon_name">pokemon name</string>
 </resources>
