@@ -10,7 +10,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-// import com.example.pokepocket.view.ui.main.databinding.ActivityMapsBinding
+//import com.example.pokepocket.view.ui.main.databinding.ActivityMapsBinding
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
