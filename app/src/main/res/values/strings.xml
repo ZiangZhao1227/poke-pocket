@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">poke_Pocket</string>
+    <string name="splash_screen">Splash screen is launching</string>
 </resources>
