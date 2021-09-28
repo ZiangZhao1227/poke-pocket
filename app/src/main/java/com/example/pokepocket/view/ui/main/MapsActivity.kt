@@ -1,7 +1,10 @@
 package com.example.pokepocket.view.ui.main
 
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
 import com.example.pokepocket.R
 import com.example.pokepocket.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -17,6 +20,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
 
+    private val USER_LOCATION_REQUEST_CODE = 33
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -27,6 +32,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        requestLocationPermission()
     }
 
     /**
@@ -36,7 +43,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      * we just add a marker near Sydney, Australia.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
+     * installed Google Play services and wreturned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -46,4 +53,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(MarkerOptions().position(leppavaara).title("Marker in Leppävaara"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(leppavaara))
     }
+
+    // ask user's permission
+    private fun requestLocationPermission() {
+
+        if (Build.VERSION.SDK_INT >= 23) {
+
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+
+                requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    ,USER_LOCATION_REQUEST_CODE)
+            }
+        }
+    }
+
 }
