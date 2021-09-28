@@ -1,8 +1,10 @@
 package com.example.pokepocket.view.ui.main
 
+import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,8 +15,10 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+
 // import com.example.pokepocket.view.ui.main.databinding.ActivityMapsBinding
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -23,8 +27,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMapsBinding
 
     private val USER_LOCATION_REQUEST_CODE = 33
-
     private var playerLocation: Location? = null
+    private var locationManager: LocationManager? = null
+    private var locationListener: PlayerLocationListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +41,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        locationListener = PlayerLocationListener()
 
         requestLocationPermission()
     }
@@ -53,9 +61,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         // Add a marker in Leppävaara and move the camera
-        val leppavaara = LatLng(60.212728, 24.812588)
-        mMap.addMarker(MarkerOptions().position(leppavaara).title("Marker in Leppävaara"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(leppavaara))
+        val plrLocation = LatLng(playerLocation!!.latitude, playerLocation!!.longitude)
+        mMap.addMarker(
+            MarkerOptions().position(plrLocation).title("Player").snippet("Let's Go !")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.player))
+        )
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(plrLocation))
     }
 
     // ask user's permission
@@ -65,16 +76,42 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
             if (ActivityCompat.checkSelfPermission(
                     this,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED) {
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                ) !=
+                PackageManager.PERMISSION_GRANTED
+            ) {
 
-                requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
-                    ,USER_LOCATION_REQUEST_CODE)
+                requestPermissions(
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    USER_LOCATION_REQUEST_CODE
+                )
             }
         }
     }
 
-    inner class PlayerLocationListener: LocationListener {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+
+        if (requestCode == USER_LOCATION_REQUEST_CODE) {
+            // this array holds the results whether they use it has given that the app the permission to access the location or not
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // calls requestLocationUpdates if the location of player changed in 2 meters, updates every 2 seconds
+                locationManager?.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    2000, 2f, locationListener!!
+                )
+
+            }
+
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    inner class PlayerLocationListener : LocationListener {
 
         constructor() {
             // whenever the app is referring to players location, it is not going to end up with null pointer exception
