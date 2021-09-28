@@ -1,6 +1,8 @@
 package com.example.pokepocket.view.ui.main
 
 import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,6 +23,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMapsBinding
 
     private val USER_LOCATION_REQUEST_CODE = 33
+
+    private var playerLocation: Location? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +72,35 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     ,USER_LOCATION_REQUEST_CODE)
             }
         }
+    }
+
+    inner class PlayerLocationListener: LocationListener {
+
+        constructor() {
+            // whenever the app is referring to players location, it is not going to end up with null pointer exception
+            playerLocation = Location("MyProvider")
+            playerLocation?.latitude = 0.0
+            playerLocation?.longitude = 0.0
+        }
+
+        override fun onLocationChanged(updatedLocation: Location?) {
+            // gets access to the updated location
+            playerLocation = updatedLocation
+
+        }
+
+        override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
+
+        }
+
+        override fun onProviderEnabled(p0: String?) {
+
+        }
+
+        override fun onProviderDisabled(p0: String?) {
+
+        }
+
     }
 
 }
