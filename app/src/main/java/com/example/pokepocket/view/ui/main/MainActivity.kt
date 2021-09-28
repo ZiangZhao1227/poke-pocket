@@ -1,5 +1,6 @@
 package com.example.pokepocket.view.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -54,6 +55,11 @@ class MainActivity : AppCompatActivity() {
 
         })
         changeColor(getColor(R.color.colorPrimary))
+
+        floating_action_button.setOnClickListener{
+            val intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onResume() {
