@@ -12,14 +12,16 @@ import com.example.pokepocket.viewstate.Loading
 import com.example.pokepocket.viewstate.Success
 import com.example.pokepocket.viewstate.ViewState
 import java.lang.Exception
-
+/* Here we create a repo class that is primarily used to manage multiple data sources.
+   Declares the DAO as a private property in the constructor. Pass in the DAO
+   instead of the whole database, because we only need access to the DAO*/
 class MainRepository(
     private val pokemonService: IPokemonService,
     private val pokemonDao : PokemonDao): IMainRepository {
 
     private val TAG = MainRepository::class.java.simpleName
 
-    /** LIVE DATA **/
+    /* LIVE DATA */
     private val _pokemonListLiveData : MutableLiveData<ViewState<List<Pokemon>>> = MutableLiveData()
     val pokemonListLiveData :LiveData<ViewState<List<Pokemon>>> = _pokemonListLiveData
 

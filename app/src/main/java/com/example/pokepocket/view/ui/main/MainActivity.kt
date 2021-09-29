@@ -23,14 +23,16 @@ import com.example.pokepocket.viewstate.ViewState
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    // Using by lazy so the database and the repository are only created when they're needed rather than when the application starts
     private val viewmodelFactory by lazy { MainActivityViewModelFactory(this) }
+    //create viewModel by using viewModels delegate, passing in an instance of our viewModelFactory.
     private val viewModel: MainActivityViewModel by viewModels {
         viewmodelFactory
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+    //to display how many Pokemons will display in one raw
         val pokemonList: RecyclerView = findViewById(R.id.pokemon_recycler_view)
         pokemonList.layoutManager = GridLayoutManager(this, 2)
 
@@ -38,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         pokemonList.adapter = pokemonListAdapter
 
         //Create an observer which updates UI in after network calls
+        //The onChanged() method (the default method for our Lambda) fires when the observed data changes and the activity is in the foreground
         viewModel.pokemonLiveData.observe(this, Observer<ViewState<List<Pokemon>>> { viewState ->
             when (viewState) {
                 is Success -> {

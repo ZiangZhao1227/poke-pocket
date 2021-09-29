@@ -15,7 +15,8 @@ import com.example.pokepocket.model.Pokemon
 import com.example.pokepocket.view.ui.main.DetailActivity
 import com.example.pokepocket.view.ui.main.MainActivity
 import kotlinx.android.synthetic.main.item_pokemon_list.view.*
-
+/*use Glide palette from florent37 library to change pokemon's background color(Card view) based on those Pokemon's dominant color
+and use Glide for fetching,decoding,and displaying images to make scrolling in a smoother and faster way*/
 class PokemonListItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
     fun bindView(pokemonModel : Pokemon){
         itemView.pokemon_name_text_view.text = pokemonModel.name

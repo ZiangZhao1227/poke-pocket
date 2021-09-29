@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.pokepocket.model.Pokemon
 
+//Specify SQL queries and associating them with method calls
 @Dao
 interface PokemonDao {
 

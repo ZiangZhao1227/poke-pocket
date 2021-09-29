@@ -3,6 +3,10 @@ package com.example.pokepocket.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
+/*Create a Pokemon class and this class will describe the entity which represents the SQLite table
+and it has two properties,thus there are two columns in the table for pokemon class
+*/
+
 
 @Entity
 data class Pokemon(
