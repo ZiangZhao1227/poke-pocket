@@ -30,6 +30,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var playerLocation: Location? = null
     private var locationManager: LocationManager? = null
     private var locationListener: PlayerLocationListener? = null
+    private var pokemonCharacters: ArrayList<PokemonCharacter> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +47,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         locationListener = PlayerLocationListener()
 
         requestLocationPermission()
+        initializePokemonCharacters()
     }
 
     /**
@@ -60,7 +62,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Leppävaara and move the camera
+        // Add a marker for player's location
         val plrLocation = LatLng(playerLocation!!.latitude, playerLocation!!.longitude)
         mMap.addMarker(
             MarkerOptions().position(plrLocation).title("Player").snippet("Let's Go !")
@@ -138,6 +140,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         }
 
+    }
+
+    private fun initializePokemonCharacters() {
+        // refers to the class PokemonCharacter
+        pokemonCharacters.add(PokemonCharacter("This is Pikachu", "I'm hungry", R.drawable.img_pikachu, 1.651729, 31.996134))
+        pokemonCharacters.add(PokemonCharacter("This is Haunter", "Be afraid!", R.drawable.img_haunter, 27.404523, 29.647654))
+        pokemonCharacters.add(PokemonCharacter("This is Vaporeon", "I'm thirsty", R.drawable.img_vaporeon, 10.492703, 10.709112))
+        pokemonCharacters.add(PokemonCharacter("This is Zapdos", "I'm the most powerful!", R.drawable.img_zapdos, 28.220750, 1.898764))
     }
 
 }

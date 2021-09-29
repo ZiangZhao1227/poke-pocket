@@ -10,13 +10,14 @@ class PokemonCharacter {
     var location : Location? = null
     var isDefeated : Boolean? = false
 
-    constructor(titleOfPokemon: String, message: String, iconOfPokemon: Int, location: Location) {
+    constructor(titleOfPokemon: String, message: String, iconOfPokemon: Int, latitude: Double, longitude: Double) {
 
         this.titleOfPokemon = titleOfPokemon
         this.message = message
         this.iconOfPokemon = iconOfPokemon
-        this.location = location
-        
+        this.location?.latitude = latitude  // access location in terms of coordinates
+        this.location?.longitude = longitude  // access location in terms of coordinates
+
     }
 
 }
