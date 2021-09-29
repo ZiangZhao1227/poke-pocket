@@ -62,13 +62,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker for player's location
-        val plrLocation = LatLng(playerLocation!!.latitude, playerLocation!!.longitude)
-        mMap.addMarker(
-            MarkerOptions().position(plrLocation).title("Player").snippet("Let's Go !")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.player))
-        )
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(plrLocation))
+
     }
 
     // ask user's permission
@@ -85,7 +79,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 requestPermissions(
                     arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                    USER_LOCATION_REQUEST_CODE)
+                    USER_LOCATION_REQUEST_CODE
+                )
                 return // for not reaching the accessUserLocation() to avoid crash
             }
         }
@@ -140,10 +135,42 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun initializePokemonCharacters() {
         // refers to the class PokemonCharacter
-        pokemonCharacters.add(PokemonCharacter("This is Pikachu", "I'm hungry", R.drawable.img_pikachu, 1.651729, 31.996134))
-        pokemonCharacters.add(PokemonCharacter("This is Haunter", "Be afraid!", R.drawable.img_haunter, 27.404523, 29.647654))
-        pokemonCharacters.add(PokemonCharacter("This is Vaporeon", "I'm thirsty", R.drawable.img_vaporeon, 10.492703, 10.709112))
-        pokemonCharacters.add(PokemonCharacter("This is Zapdos", "I'm the most powerful!", R.drawable.img_zapdos, 28.220750, 1.898764))
+        pokemonCharacters.add(
+            PokemonCharacter(
+                "This is Pikachu",
+                "I'm hungry",
+                R.drawable.img_pikachu,
+                1.651729,
+                31.996134
+            )
+        )
+        pokemonCharacters.add(
+            PokemonCharacter(
+                "This is Haunter",
+                "Be afraid!",
+                R.drawable.img_haunter,
+                27.404523,
+                29.647654
+            )
+        )
+        pokemonCharacters.add(
+            PokemonCharacter(
+                "This is Vaporeon",
+                "I'm thirsty",
+                R.drawable.img_vaporeon,
+                10.492703,
+                10.709112
+            )
+        )
+        pokemonCharacters.add(
+            PokemonCharacter(
+                "This is Zapdos",
+                "I'm the most powerful!",
+                R.drawable.img_zapdos,
+                28.220750,
+                1.898764
+            )
+        )
     }
 
     private fun accessUserLocation() {
@@ -152,6 +179,32 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             LocationManager.GPS_PROVIDER,
             2000, 2f, locationListener!!
         )
+        // for executing the run function
+        var newThread = NewThread()
+        newThread.start()
     }
 
+    // NewThread class is going to accept for to show the player on the map
+    inner class NewThread : Thread {
+        // NewThread's constructor
+        constructor() : super() {
+
+
+        }
+
+        // overrides the run fun of the NewThread class
+        override fun run() {
+            super.run()
+
+            runOnUiThread {
+                // Add a marker for player's location
+                val plrLocation = LatLng(playerLocation!!.latitude, playerLocation!!.longitude)
+                mMap.addMarker(
+                    MarkerOptions().position(plrLocation).title("Player").snippet("Let's Go !")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.player))
+                )
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(plrLocation))
+            }
+        }
+    }
 }
