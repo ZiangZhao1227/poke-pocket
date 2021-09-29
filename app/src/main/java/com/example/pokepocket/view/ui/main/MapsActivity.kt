@@ -85,10 +85,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 requestPermissions(
                     arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                    USER_LOCATION_REQUEST_CODE
-                )
+                    USER_LOCATION_REQUEST_CODE)
+                return // for not reaching the accessUserLocation() to avoid crash
             }
         }
+        accessUserLocation()
     }
 
     override fun onRequestPermissionsResult(
@@ -100,12 +101,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (requestCode == USER_LOCATION_REQUEST_CODE) {
             // this array holds the results whether they use it has given that the app the permission to access the location or not
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // calls requestLocationUpdates if the location of player changed in 2 meters, updates every 2 seconds
-                locationManager?.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    2000, 2f, locationListener!!
-                )
-
+                accessUserLocation()
             }
 
         }
@@ -148,6 +144,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         pokemonCharacters.add(PokemonCharacter("This is Haunter", "Be afraid!", R.drawable.img_haunter, 27.404523, 29.647654))
         pokemonCharacters.add(PokemonCharacter("This is Vaporeon", "I'm thirsty", R.drawable.img_vaporeon, 10.492703, 10.709112))
         pokemonCharacters.add(PokemonCharacter("This is Zapdos", "I'm the most powerful!", R.drawable.img_zapdos, 28.220750, 1.898764))
+    }
+
+    private fun accessUserLocation() {
+        // calls requestLocationUpdates if the location of player changed in 2 meters, updates every 2 seconds
+        locationManager?.requestLocationUpdates(
+            LocationManager.GPS_PROVIDER,
+            2000, 2f, locationListener!!
+        )
     }
 
 }
