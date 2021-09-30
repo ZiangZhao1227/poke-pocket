@@ -28,6 +28,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val USER_LOCATION_REQUEST_CODE = 33
     private var playerLocation: Location? = null
+    private var oldLocationOfPlayer: Location? = null
     private var locationManager: LocationManager? = null
     private var locationListener: PlayerLocationListener? = null
     private var pokemonCharacters: ArrayList<PokemonCharacter> = ArrayList()
@@ -188,22 +189,36 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     inner class NewThread : Thread {
         // NewThread's constructor
         constructor() : super() {
-
-
+            // above was null, so I assigned a valid value to oldLocationOfPlayer
+            oldLocationOfPlayer = Location("MyProvider")
+            oldLocationOfPlayer?.latitude = 0.0
+            oldLocationOfPlayer?.longitude = 0.0
         }
-
         // overrides the run fun of the NewThread class
         override fun run() {
             super.run()
+            // for always execute try block
+            while (true) {
+                // if the player, hasn't moved at all
+                if (oldLocationOfPlayer?.distanceTo(playerLocation) == 0f) {
+                    continue // for go back to while loop
+                }
 
-            runOnUiThread {
-                // Add a marker for player's location
-                val plrLocation = LatLng(playerLocation!!.latitude, playerLocation!!.longitude)
-                mMap.addMarker(
-                    MarkerOptions().position(plrLocation).title("Player").snippet("Let's Go !")
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.player))
-                )
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(plrLocation))
+                try {
+                    runOnUiThread {
+                        // Add a marker for player's location
+                        val plrLocation = LatLng(playerLocation!!.latitude, playerLocation!!.longitude)
+                        mMap.addMarker(
+                            MarkerOptions().position(plrLocation).title("Player").snippet("Let's Go !")
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.player))
+                        )
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(plrLocation))
+                    }
+
+                } catch (exception: Exception) {
+
+                    exception.printStackTrace()
+                }
             }
         }
     }
