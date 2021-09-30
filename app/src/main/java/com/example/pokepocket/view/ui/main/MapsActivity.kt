@@ -19,6 +19,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.CameraUpdate
+
+
+
 
 // import com.example.pokepocket.view.ui.main.databinding.ActivityMapsBinding
 
@@ -63,7 +67,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
 
     }
 
@@ -111,8 +114,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         constructor() {
             // whenever the app is referring to players location, it is not going to end up with null pointer exception
             playerLocation = Location("MyProvider")
-            playerLocation?.latitude = 0.0
-            playerLocation?.longitude = 0.0
+            playerLocation?.latitude = 60.17
+            playerLocation?.longitude = 24.95
         }
 
         override fun onLocationChanged(updatedLocation: Location?) {
@@ -187,8 +190,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun accessUserLocation() {
         // calls requestLocationUpdates if the location of player changed in 2 meters, updates every 1 second
         locationManager?.requestLocationUpdates(
-            LocationManager.GPS_PROVIDER,
-            1000, 2f, locationListener!!
+            LocationManager.NETWORK_PROVIDER,
+            1000,
+            2f,
+            locationListener!!
         )
         // for executing the run function
         var newThread = NewThread()
@@ -227,7 +232,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             MarkerOptions().position(plrLocation).title("Player").snippet("Let's Go !")
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.player))
                         )
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(plrLocation))
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(plrLocation,14.0f))
 
                         for (pokemonCharacterIndex in 0.until(pokemonCharacters.size)) {
 
