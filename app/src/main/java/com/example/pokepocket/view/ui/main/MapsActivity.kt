@@ -141,8 +141,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 "This is Pikachu",
                 "I'm hungry",
                 R.drawable.img_pikachu,
-                1.651729,
-                31.996134
+                60.22436,
+                24.75823
             )
         )
         pokemonCharacters.add(
@@ -150,8 +150,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 "This is Haunter",
                 "Be afraid!",
                 R.drawable.img_haunter,
-                27.404523,
-                29.647654
+                60.20603,
+                24.65421
             )
         )
         pokemonCharacters.add(
@@ -159,8 +159,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 "This is Vaporeon",
                 "I'm thirsty",
                 R.drawable.img_vaporeon,
-                10.492703,
-                10.709112
+                60.21467,
+                24.81200
             )
         )
         pokemonCharacters.add(
@@ -168,8 +168,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 "This is Zapdos",
                 "I'm the most powerful!",
                 R.drawable.img_zapdos,
-                28.220750,
-                1.898764
+                60.14438,
+                24.98964
             )
         )
     }
@@ -204,8 +204,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     continue // for go back to while loop
                 }
 
+                oldLocationOfPlayer = playerLocation
+
                 try {
+
                     runOnUiThread {
+                        // will clear the map everytime
+                        mMap.clear()
                         // Add a marker for player's location
                         val plrLocation = LatLng(playerLocation!!.latitude, playerLocation!!.longitude)
                         mMap.addMarker(
@@ -213,6 +218,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.player))
                         )
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(plrLocation))
+
+                        for (pokemonCharacterIndex in 0.until(pokemonCharacters.size)) {
+
+                            var pc = pokemonCharacters[pokemonCharacterIndex]
+                            //in this case it will show the pokemon character on the map
+                            if (pc.isDefeated == false) {
+
+                                var pcLocation = LatLng(pc.location!!.latitude, pc.location!!.longitude)
+                                mMap.addMarker(MarkerOptions()
+                                    .position(pcLocation)
+                                    .title(pc.titleOfPokemon)
+                                    .snippet(pc.message)
+                                    .icon(BitmapDescriptorFactory.fromResource(pc.iconOfPokemon!!)))
+                            }
+                        }
                     }
 
                 } catch (exception: Exception) {

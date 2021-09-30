@@ -12,6 +12,8 @@ class PokemonCharacter {
 
     constructor(titleOfPokemon: String, message: String, iconOfPokemon: Int, latitude: Double, longitude: Double) {
 
+        location = Location("MyProvider")
+
         this.titleOfPokemon = titleOfPokemon
         this.message = message
         this.iconOfPokemon = iconOfPokemon
