@@ -8,6 +8,7 @@ import android.location.LocationManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.example.pokepocket.R
 import com.example.pokepocket.databinding.ActivityMapsBinding
@@ -172,13 +173,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 24.98964
             )
         )
+        pokemonCharacters.add(
+            PokemonCharacter(
+                "This is Charizard",
+                "I will burn you!",
+                R.drawable.img_charizard,
+                60.22396,
+                24.75841
+            )
+        )
     }
 
     private fun accessUserLocation() {
-        // calls requestLocationUpdates if the location of player changed in 2 meters, updates every 2 seconds
+        // calls requestLocationUpdates if the location of player changed in 2 meters, updates every 1 second
         locationManager?.requestLocationUpdates(
             LocationManager.GPS_PROVIDER,
-            2000, 2f, locationListener!!
+            1000, 2f, locationListener!!
         )
         // for executing the run function
         var newThread = NewThread()
@@ -231,9 +241,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                     .title(pc.titleOfPokemon)
                                     .snippet(pc.message)
                                     .icon(BitmapDescriptorFactory.fromResource(pc.iconOfPokemon!!)))
+
+                                // when u catch the pokemon, when usersLocation == pokemonLocation, it will disappear from map
+                                if (playerLocation!!.distanceTo(pc.location) < 1) {
+
+                                    Toast.makeText(this@MapsActivity, "${pc.titleOfPokemon} is eliminated", Toast.LENGTH_SHORT).show()
+                                    pc.isDefeated = true
+                                    //then it updates the array list
+                                    pokemonCharacters[pokemonCharacterIndex] = pc
+                                }
                             }
                         }
                     }
+                    Thread.sleep(1000)
 
                 } catch (exception: Exception) {
 
