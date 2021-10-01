@@ -1,5 +1,6 @@
 package com.example.pokepocket.view.ui.main
 
+import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
@@ -189,6 +190,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun accessUserLocation() {
         // calls requestLocationUpdates if the location of player changed in 2 meters, updates every 1 second
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
         locationManager?.requestLocationUpdates(
             LocationManager.NETWORK_PROVIDER,
             1000,
