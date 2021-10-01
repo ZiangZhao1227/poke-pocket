@@ -77,5 +77,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     //MVVM
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
+    implementation 'com.google.code.gson:gson:2.8.8'
 
 }

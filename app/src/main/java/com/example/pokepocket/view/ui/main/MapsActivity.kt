@@ -26,6 +26,16 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.CameraUpdate
+import com.google.gson.Gson
+
+import android.content.SharedPreferences
+import com.google.gson.reflect.TypeToken
+
+
+
+
+
+
 
 
 // import com.example.pokepocket.view.ui.main.databinding.ActivityMapsBinding
@@ -206,7 +216,33 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 24.75841
             )
         )
+        //saveData()
     }
+
+/*    private fun saveData() {
+        // method for saving the data in array list.
+        // creating a variable for storing data in
+        // shared preferences.
+        val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
+
+        // creating a variable for editor to
+        // store data in shared preferences.
+        val editor = sharedPreferences.edit()
+
+        // creating a new variable for gson.
+        val gson = Gson()
+
+        // getting data from gson and storing it in a string.
+        val json = gson.toJson(pokemonCharacters)
+
+        editor.putString("pokemon", json)
+
+        // below line is to apply changes
+        // and save data in shared prefs.
+        editor.apply()
+
+        Log.d("saveee","save data from array list $json")
+    }*/
 
     private fun popNotify(name:String) {
         createNotificationChannel()
