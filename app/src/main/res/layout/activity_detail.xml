@@ -176,7 +176,7 @@
             app:layout_constraintStart_toEndOf="@+id/hp"
             app:layout_constraintTop_toTopOf="@+id/hp"
             app:progressView_colorBackground="@color/white"
-            app:progressView_colorProgress="@color/colorPrimary"
+            app:progressView_colorProgress="@color/colorAccent"
             app:progressView_labelColorInner="@color/white"
             app:progressView_labelColorOuter="@color/black"
             app:progressView_labelSize="12sp"
