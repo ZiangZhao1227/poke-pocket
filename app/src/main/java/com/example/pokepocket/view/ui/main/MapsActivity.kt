@@ -9,6 +9,7 @@ import android.location.LocationManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.example.pokepocket.R
@@ -259,7 +260,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                     .icon(BitmapDescriptorFactory.fromResource(pc.iconOfPokemon!!)))
 
                                 // when u catch the pokemon, when usersLocation == pokemonLocation, it will disappear from map
-                                if (playerLocation!!.distanceTo(pc.location) < 1) {
+                                Log.d("Proximity","distance & accuracy ${playerLocation?.accuracy}" )
+                                if (playerLocation!!.distanceTo(pc.location) < 1 + playerLocation!!.accuracy)  {
 
                                     Toast.makeText(this@MapsActivity, "${pc.titleOfPokemon} is eliminated", Toast.LENGTH_SHORT).show()
                                     pc.isDefeated = true
