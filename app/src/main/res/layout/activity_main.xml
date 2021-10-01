@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".view.ui.main.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -36,6 +37,7 @@
         android:queryBackground="@android:color/transparent"
         android:queryHint="Search a Pokemon"
         android:background="@drawable/searchview_background"
+        android:backgroundTint="@color/white"
         android:contentDescription="@string/enter_a_pokemon"
         app:layout_constraintBottom_toTopOf="@+id/pokemon_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
