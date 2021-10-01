@@ -23,5 +23,8 @@
     <string name="health_value_bar">health value bar</string>
     <string name="enter_a_pokemon">Please enter a pokemon name here</string>
     <string name="pokemon_map_button">pokemon map button</string>
+    <string name="channel_name">channel name</string>
+    <string name="channel_description">channel description</string>
+    <string name="notify_title">pokemon captured</string>
 
 </resources>
