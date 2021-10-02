@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import com.example.pokepocket.extensions.changeColor
 import com.example.pokepocket.extensions.hide
 import com.example.pokepocket.extensions.show
 import com.example.pokepocket.model.Pokemon
+import com.example.pokepocket.services.ForegroundService
 import com.example.pokepocket.view.adapter.PokemonListAdapter
 import com.example.pokepocket.viewmodels.MainActivityViewModel
 import com.example.pokepocket.viewmodels.MainActivityViewModelFactory
@@ -45,10 +47,12 @@ class MainActivity : AppCompatActivity() {
             when (viewState) {
                 is Success -> {
                     main_progress_bar.hide()
+                    startService()
                     pokemonListAdapter.setPokemonList(viewState.data)
                 }
                 is Error -> {
                     main_progress_bar.hide()
+                    stopService()
                     Toast.makeText(this, viewState.errMsg, Toast.LENGTH_SHORT).show()
                 }
                 is Loading -> {
@@ -63,7 +67,20 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
+
     }
+
+    private fun startService() {
+        val serviceIntent = Intent(this, ForegroundService::class.java)
+        serviceIntent.putExtra("inputExtra", "Internet connected successfully")
+        ContextCompat.startForegroundService(this, serviceIntent)
+    }
+
+    private fun stopService() {
+        val serviceIntent = Intent(this, ForegroundService::class.java)
+        stopService(serviceIntent)
+    }
+
 
     override fun onResume() {
         super.onResume()

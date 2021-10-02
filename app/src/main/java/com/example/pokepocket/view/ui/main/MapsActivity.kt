@@ -30,6 +30,14 @@ import com.google.gson.Gson
 
 import android.content.SharedPreferences
 import com.google.gson.reflect.TypeToken
+import androidx.core.content.ContextCompat
+
+import com.example.pokepocket.services.ForegroundService
+
+import android.content.Intent
+
+
+
 
 
 
@@ -85,6 +93,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         requestLocationPermission()
         initializePokemonCharacters()
+
     }
 
     /**
@@ -244,7 +253,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         Log.d("saveee","save data from array list $json")
     }*/
 
-    private fun popNotify(name:String) {
+   private fun popNotify(name:String) {
         createNotificationChannel()
 
         val notif = NotificationCompat.Builder(this@MapsActivity, CHANNEL_ID)
@@ -254,7 +263,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
         NotificationManagerCompat.from(this@MapsActivity).notify(1, notif)
+
     }
+
 
     private fun accessUserLocation() {
         // calls requestLocationUpdates if the location of player changed in 2 meters, updates every 1 second
