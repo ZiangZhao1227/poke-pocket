@@ -22,7 +22,7 @@ class PokemonListItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemV
         itemView.pokemon_name_text_view.text = pokemonModel.name
         Glide.with(itemView.context).load(pokemonModel.getImageUrl())
             .listener(GlidePalette.with(pokemonModel.getImageUrl())
-                    .use(BitmapPalette.Profile.VIBRANT_DARK)
+                    .use(BitmapPalette.Profile.MUTED_LIGHT)
                     .intoCallBack { palette ->
                         val rgb = palette?.dominantSwatch?.rgb
                         if (rgb != null) {

@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.pokepocket"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -78,5 +78,8 @@ dependencies {
     //MVVM
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
     implementation 'com.google.code.gson:gson:2.8.8'
+
+    //AR
+    "com.gorisse.thomas.sceneform:sceneform:1.19.6"
 
 }
