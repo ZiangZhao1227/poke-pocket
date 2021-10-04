@@ -1,6 +1,8 @@
 package com.example.pokepocket.view.ui.main
 
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -22,18 +24,23 @@ import com.example.pokepocket.viewstate.Error
 import com.example.pokepocket.viewstate.Loading
 import com.example.pokepocket.viewstate.Success
 import com.example.pokepocket.viewstate.ViewState
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ConnReceiver.ConnReceiverListener {
     // Using by lazy so the database and the repository are only created when they're needed rather than when the application starts
     private val viewmodelFactory by lazy { MainActivityViewModelFactory(this) }
     //create viewModel by using viewModels delegate, passing in an instance of our viewModelFactory.
     private val viewModel: MainActivityViewModel by viewModels {
         viewmodelFactory
     }
+    private lateinit var snackbar: Snackbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //
+        registerReceiver(ConnReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     //to display how many Pokemons will display in one raw
         val pokemonList: RecyclerView = findViewById(R.id.pokemon_recycler_view)
         pokemonList.layoutManager = GridLayoutManager(this, 1)
@@ -81,6 +88,24 @@ class MainActivity : AppCompatActivity() {
         stopService(serviceIntent)
     }
 
+    override fun onNetworkConnChanger(isConnected: Boolean) {
+        showNetworkMsg(isConnected)
+    }
+
+    private fun showNetworkMsg(isConnected: Boolean) {
+        if (isConnected){
+            snackbar = Snackbar.make(this.findViewById(android.R.id.content) , "You are online" , Snackbar.LENGTH_LONG)
+            snackbar.show()
+        }else{
+            snackbar = Snackbar.make(this.findViewById(android.R.id.content) , "You are offline" , Snackbar.LENGTH_LONG)
+            snackbar.show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ConnReceiver.connectivityReceiverListener = this
+    }
 
 
 }
