@@ -19,7 +19,7 @@ abstract class AppDatabase : RoomDatabase() {
             // if it is, then create the database
             if(INSTANCE == null){
                 synchronized(AppDatabase::class){
-                    INSTANCE = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java,"myDB")
+                    INSTANCE = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java,"pokemon_database")
                         .build()
                 }
             }

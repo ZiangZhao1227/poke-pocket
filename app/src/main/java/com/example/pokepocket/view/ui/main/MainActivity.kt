@@ -36,14 +36,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     //to display how many Pokemons will display in one raw
         val pokemonList: RecyclerView = findViewById(R.id.pokemon_recycler_view)
-        pokemonList.layoutManager = GridLayoutManager(this, 2)
+        pokemonList.layoutManager = GridLayoutManager(this, 1)
 
         val pokemonListAdapter = PokemonListAdapter(this)
         pokemonList.adapter = pokemonListAdapter
 
         //Create an observer which updates UI in after network calls
         //The onChanged() method (the default method for our Lambda) fires when the observed data changes and the activity is in the foreground
-        viewModel.pokemonLiveData.observe(this, Observer<ViewState<List<Pokemon>>> { viewState ->
+        viewModel.pokemonLiveData.observe(this, { viewState ->
             when (viewState) {
                 is Success -> {
                     main_progress_bar.hide()
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-        changeColor(getColor(R.color.colorPrimary))
+        changeColor(getColor(R.color.pokemon_submain))
 
         floating_action_button.setOnClickListener{
             val intent = Intent(this, MapsActivity::class.java)
@@ -82,10 +82,5 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        if (searchView != null) {
-            searchView.clearFocus();
-        }
-    }
+
 }

@@ -48,4 +48,6 @@
     <color name="ground">#AD7235</color>
     <color name="md_blue_100">#81D4fA</color>
     <color name="md_blue_200">#0091EA</color>
+    <color name="pokemon_main">#FCCF00</color>
+    <color name="pokemon_submain">#2468B1</color>
 </resources>

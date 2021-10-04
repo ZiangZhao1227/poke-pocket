@@ -29,7 +29,7 @@ fun createPokemonService() : IPokemonService {
 interface IPokemonService {
     @GET("pokemon")
     fun fetchPokemonList(
-        @Query("limit") limit: Int = 900,
+        @Query("limit") limit: Int = 9,
         @Query("offset") offset: Int = 0
     ): Call<PokemonResponse>  //return the data that is expected from the server wrapped it into a typed Retrofit Call< > class.
 

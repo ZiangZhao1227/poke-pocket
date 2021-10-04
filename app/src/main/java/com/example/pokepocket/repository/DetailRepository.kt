@@ -11,6 +11,7 @@ import com.example.pokepocket.viewstate.Loading
 import com.example.pokepocket.viewstate.Success
 import com.example.pokepocket.viewstate.ViewState
 
+
 class DetailRepository(private val pokemonService : IPokemonService) :IDetailRepository {
 
     private val TAG = DetailRepository::class.java.simpleName
