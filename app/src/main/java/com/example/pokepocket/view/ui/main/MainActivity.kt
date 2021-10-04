@@ -1,6 +1,9 @@
 package com.example.pokepocket.view.ui.main
 
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -31,9 +34,19 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainActivityViewModel by viewModels {
         viewmodelFactory
     }
+    lateinit var receiver: AirplaneModeChangedReceiver
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        receiver = AirplaneModeChangedReceiver()
+
+        IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED).also {
+            registerReceiver(receiver, it)
+        }
+
+
     //to display how many Pokemons will display in one raw
         val pokemonList: RecyclerView = findViewById(R.id.pokemon_recycler_view)
         pokemonList.layoutManager = GridLayoutManager(this, 2)
@@ -87,5 +100,10 @@ class MainActivity : AppCompatActivity() {
         if (searchView != null) {
             searchView.clearFocus();
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(receiver)
     }
 }
