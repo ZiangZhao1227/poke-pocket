@@ -9,10 +9,10 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -25,34 +25,13 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.CameraUpdate
 import com.google.gson.Gson
-
-import android.content.SharedPreferences
-import com.google.gson.reflect.TypeToken
-import androidx.core.content.ContextCompat
-
-import com.example.pokepocket.services.ForegroundService
-
-import android.content.Intent
-
-
-
-
-
-
-
-
-
-
-
-// import com.example.pokepocket.view.ui.main.databinding.ActivityMapsBinding
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
-    val CHANNEL_ID = "mynoti"
+    private val CHANNEL_ID = "mynoti"
 
     private val USER_LOCATION_REQUEST_CODE = 33
     private var playerLocation: Location? = null
@@ -92,6 +71,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         locationListener = PlayerLocationListener()
 
         requestLocationPermission()
+        //if no pokemons in shared pref
         initializePokemonCharacters()
 
     }
@@ -113,21 +93,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     // ask user's permission
     private fun requestLocationPermission() {
 
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
 
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION
-                ) !=
-                PackageManager.PERMISSION_GRANTED
-            ) {
-
-                requestPermissions(
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                    USER_LOCATION_REQUEST_CODE
-                )
-                return // for not reaching the accessUserLocation() to avoid crash
-            }
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                USER_LOCATION_REQUEST_CODE
+            )
+            return // for not reaching the accessUserLocation() to avoid crash
         }
         accessUserLocation()
     }
@@ -149,10 +126,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    inner class PlayerLocationListener : LocationListener {
+    inner class PlayerLocationListener// whenever the app is referring to players location, it is not going to end up with null pointer exception
+        : LocationListener {
 
-        constructor() {
-            // whenever the app is referring to players location, it is not going to end up with null pointer exception
+        init {
             playerLocation = Location("MyProvider")
             playerLocation?.latitude = 60.17
             playerLocation?.longitude = 24.95
@@ -225,10 +202,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 24.75841
             )
         )
-        //saveData()
+        saveData()
     }
 
-/*    private fun saveData() {
+    private fun saveData() {
         // method for saving the data in array list.
         // creating a variable for storing data in
         // shared preferences.
@@ -251,7 +228,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         editor.apply()
 
         Log.d("saveee","save data from array list $json")
-    }*/
+    }
 
    private fun popNotify(name:String) {
         createNotificationChannel()
@@ -286,15 +263,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             locationListener!!
         )
         // for executing the run function
-        var newThread = NewThread()
+        val newThread = NewThread()
         newThread.start()
     }
 
     // NewThread class is going to accept for to show the player on the map
-    inner class NewThread : Thread {
-        // NewThread's constructor
-        constructor() : super() {
-            // above was null, so I assigned a valid value to oldLocationOfPlayer
+    inner class NewThread// above was null, so I assigned a valid value to oldLocationOfPlayer// NewThread's constructor
+        : Thread() {
+        init {
             oldLocationOfPlayer = Location("MyProvider")
             oldLocationOfPlayer?.latitude = 0.0
             oldLocationOfPlayer?.longitude = 0.0
@@ -329,11 +305,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         for (pokemonCharacterIndex in 0.until(pokemonCharacters.size)) {
 
-                            var pc = pokemonCharacters[pokemonCharacterIndex]
+                            val pc = pokemonCharacters[pokemonCharacterIndex]
                             //in this case it will show the pokemon character on the map
                             if (pc.isDefeated == false) {
 
-                                var pcLocation =
+                                val pcLocation =
                                     LatLng(pc.location!!.latitude, pc.location!!.longitude)
                                 mMap.addMarker(
                                     MarkerOptions()
@@ -348,7 +324,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                     "Proximity",
                                     "distance & accuracy ${playerLocation?.accuracy}"
                                 )
-                                if (playerLocation!!.distanceTo(pc.location) < 1 + playerLocation!!.accuracy) {
+                                if (playerLocation!!.distanceTo(pc.location) < 1 + if(playerLocation!!.accuracy > 15) 15f else playerLocation!!.accuracy) {
 
                                     Toast.makeText(
                                         this@MapsActivity,
@@ -359,11 +335,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                     pc.isDefeated = true
                                     //then it updates the array list
                                     pokemonCharacters[pokemonCharacterIndex] = pc
+                                    saveData()
                                 }
                             }
                         }
                     }
-                    Thread.sleep(1000)
+                    sleep(1000)
 
                 } catch (exception: Exception) {
 

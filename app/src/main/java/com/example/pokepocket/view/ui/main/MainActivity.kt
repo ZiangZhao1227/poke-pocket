@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity(), ConnReceiver.ConnReceiverListener {
                 }
                 is Error -> {
                     main_progress_bar.hide()
-                    stopService()
                     Toast.makeText(this, viewState.errMsg, Toast.LENGTH_SHORT).show()
                 }
                 is Loading -> {
@@ -105,6 +104,11 @@ class MainActivity : AppCompatActivity(), ConnReceiver.ConnReceiverListener {
     override fun onResume() {
         super.onResume()
         ConnReceiver.connectivityReceiverListener = this
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopService()
     }
 
 
