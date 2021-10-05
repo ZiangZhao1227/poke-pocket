@@ -1,8 +1,6 @@
 package com.example.pokepocket.view.ui.main
 
 import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -10,18 +8,13 @@ import android.graphics.Canvas
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.example.pokepocket.R
 import com.example.pokepocket.databinding.ActivityMapsBinding
-import com.example.pokepocket.extensions.show
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -30,41 +23,27 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_maps.*
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
+import com.google.android.gms.maps.model.Marker
+
+
+
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
-    private val CHANNEL_ID = "mynoti"
-
     private val USER_LOCATION_REQUEST_CODE = 33
     private var playerLocation: Location? = null
     private var oldLocationOfPlayer: Location? = null
     private var locationManager: LocationManager? = null
     private var locationListener: PlayerLocationListener? = null
-    private var pokemonCharacters: ArrayList<PokemonCharacter> = ArrayList()
-    private fun createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = getString(R.string.channel_name)
-            val descriptionText = getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-            }
-            // Register the channel with the system
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
+    private var currentLocationMarker: Marker? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +61,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         requestLocationPermission()
         //if no pokemons in shared pref
+        show_pokemon.setOnClickListener {
+            setMarkerOnRandomLocations(mMap)
+        }
 
     }
 
@@ -189,19 +171,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         Log.d("saveee","save data from array list $json")
     }*/
 
-   private fun popNotify(name:String) {
-        createNotificationChannel()
-
-        val notif = NotificationCompat.Builder(this@MapsActivity, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_baseline_celebration_24)
-            .setContentTitle(getString(R.string.notify_title))
-            .setContentText("You have successfully captured a ${name.drop(8)}")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .build()
-        NotificationManagerCompat.from(this@MapsActivity).notify(1, notif)
-
-    }
-
     private fun getRandomLocation(x0: Double, y0: Double, radius: Int) : LatLng {
         val random = Random()
 
@@ -226,28 +195,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setMarkerOnRandomLocations(map: GoogleMap) {
         for (i in 0..5) {
             when(i){
-                0 -> changeIcon(map, R.drawable.img_pikachu)
-                1 -> changeIcon(map, R.drawable.img_haunter)
-                2 -> changeIcon(map, R.drawable.img_charizard)
-                3 -> changeIcon(map, R.drawable.img_vaporeon)
-                4 -> changeIcon(map, R.drawable.img_zapdos)
+                0 -> changeIcon(map, R.drawable.img_pikachu,"Pikachu")
+                1 -> changeIcon(map, R.drawable.img_haunter,"Haunter")
+                2 -> changeIcon(map, R.drawable.img_charizard,"Charizard")
+                3 -> changeIcon(map, R.drawable.img_vaporeon,"Vaporeon")
+                4 -> changeIcon(map, R.drawable.img_zapdos,"Zapdos")
             }
 
         }
     }
 
-    private fun changeIcon(map: GoogleMap, drawable: Int){
+    private fun changeIcon(map: GoogleMap, drawable: Int,content: String){
         map.addMarker(
             MarkerOptions().position(
                 getRandomLocation(
                     playerLocation!!.latitude,
                     playerLocation!!.longitude,
-                    35
+                    55
                 )
             )
-                .title("run")
+                .title(content)
         )?.setIcon(
-
             getBitmapDescriptorFromVector(
                 this,
                 drawable
@@ -309,60 +277,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // overrides the run fun of the NewThread class
         override fun run() {
             super.run()
-
             // for always execute try block
             while (true) {
                 // if the player, hasn't moved at all
                 if (oldLocationOfPlayer?.distanceTo(playerLocation) == 0f) {
                     continue // for go back to while loop
                 }
-
                 oldLocationOfPlayer = playerLocation
-
                 try {
-
                     runOnUiThread {
-                        // will clear the map everytime
-                        mMap.clear()
                         // Add a marker for player's location
                         val plrLocation =
                             LatLng(playerLocation!!.latitude, playerLocation!!.longitude)
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(plrLocation, 14.0f))
-
-                        setMarkerOnRandomLocations(mMap)
-                        mMap.addMarker(
+                        currentLocationMarker?.remove()
+                        currentLocationMarker = mMap.addMarker(
                             MarkerOptions().position(plrLocation).title("Player")
                                 .snippet("Let's Go !")
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.player))
                         )
-
-
-                        for (pokemonCharacterIndex in 0.until(pokemonCharacters.size)) {
-
-                            val pc = pokemonCharacters[pokemonCharacterIndex]
-                            //in this case it will show the pokemon character on the map
-
-
-                                if (playerLocation!!.distanceTo(pc.location) < 1 + if(playerLocation!!.accuracy > 15) 15f else playerLocation!!.accuracy) {
-
-                                    Toast.makeText(
-                                        this@MapsActivity,
-                                        "${pc.titleOfPokemon?.drop(8)} just disappeared",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    pc.titleOfPokemon?.let { popNotify(it) }
-                                    pc.isDefeated = true
-                                    //then it updates the array list
-                                    pokemonCharacters[pokemonCharacterIndex] = pc
-                                  //  saveData()
-                                }
-
-                        }
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(plrLocation, 14.0f))
                     }
                     sleep(1000)
-
                 } catch (exception: Exception) {
-
                     exception.printStackTrace()
                 }
             }
