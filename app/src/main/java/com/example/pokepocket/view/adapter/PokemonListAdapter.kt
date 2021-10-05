@@ -1,5 +1,6 @@
 package com.example.pokepocket.view.adapter
 
+import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Intent
 import android.view.LayoutInflater
@@ -47,22 +48,28 @@ class PokemonListAdapter(private val mainActivity: MainActivity) : RecyclerView.
     }
 
     override fun onBindViewHolder(holder: PokemonListItemViewHolder, position: Int) {
-        val pokemonViewHolder = holder
-        pokemonViewHolder.bindView(listOfPokemons[position])
-        pokemonViewHolder.itemView.setOnClickListener {
+        holder.bindView(listOfPokemons[position])
+        holder.itemView.setOnClickListener {
             val options = ActivityOptions
-                .makeSceneTransitionAnimation(mainActivity,
-                    pokemonViewHolder.itemView.findViewById<ImageView>(R.id.pokemon_image_view), "transition_pokemon")
+                .makeSceneTransitionAnimation(
+                    mainActivity,
+                    holder.itemView.findViewById<ImageView>(R.id.pokemon_image_view),
+                    "transition_pokemon"
+                )
 
             val intent = Intent(mainActivity, DetailActivity::class.java)
             intent.putExtra(DetailActivity.ARG_POKEMON_NAME, listOfPokemons[position].name)
-            intent.putExtra(DetailActivity.ARG_POKEMON_IMAGE_URL, listOfPokemons[position].getImageUrl())
+            intent.putExtra(
+                DetailActivity.ARG_POKEMON_IMAGE_URL,
+                listOfPokemons[position].getImageUrl()
+            )
 
             // start the new activity
             mainActivity.startActivity(intent, options.toBundle())
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setPokemonList(listOfPokemons : List<Pokemon>){
         this.listOfPokemons = listOfPokemons
         notifyDataSetChanged()

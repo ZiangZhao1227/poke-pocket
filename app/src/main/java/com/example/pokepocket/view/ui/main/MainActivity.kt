@@ -8,14 +8,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokepocket.R
 import com.example.pokepocket.extensions.changeColor
 import com.example.pokepocket.extensions.hide
 import com.example.pokepocket.extensions.show
-import com.example.pokepocket.model.Pokemon
 import com.example.pokepocket.services.ForegroundService
 import com.example.pokepocket.view.adapter.PokemonListAdapter
 import com.example.pokepocket.viewmodels.MainActivityViewModel
@@ -23,7 +21,6 @@ import com.example.pokepocket.viewmodels.MainActivityViewModelFactory
 import com.example.pokepocket.viewstate.Error
 import com.example.pokepocket.viewstate.Loading
 import com.example.pokepocket.viewstate.Success
-import com.example.pokepocket.viewstate.ViewState
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 

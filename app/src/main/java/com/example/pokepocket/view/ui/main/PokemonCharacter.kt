@@ -2,24 +2,26 @@ package com.example.pokepocket.view.ui.main
 
 import android.location.Location
 
-class PokemonCharacter {
+class PokemonCharacter// access location in terms of coordinates
+// access location in terms of coordinates
+    (
+    titleOfPokemon: String,
+    message: String,
+    iconOfPokemon: Int,
+    latitude: Double,
+    longitude: Double
+) {
 
-    var titleOfPokemon : String? = null
-    var message : String? = null
-    var iconOfPokemon : Int? = null
+    var titleOfPokemon : String? = titleOfPokemon
+    var message : String? = message
+    var iconOfPokemon : Int? = iconOfPokemon
     var location : Location? = null
-    var isDefeated : Boolean? = false
+    var isDefeated = false
 
-    constructor(titleOfPokemon: String, message: String, iconOfPokemon: Int, latitude: Double, longitude: Double) {
-
+    init {
         location = Location("MyProvider")
-
-        this.titleOfPokemon = titleOfPokemon
-        this.message = message
-        this.iconOfPokemon = iconOfPokemon
-        this.location?.latitude = latitude  // access location in terms of coordinates
-        this.location?.longitude = longitude  // access location in terms of coordinates
-
+        this.location?.latitude = latitude
+        this.location?.longitude = longitude
     }
 
 }

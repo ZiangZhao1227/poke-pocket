@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
@@ -20,11 +19,10 @@ import com.example.pokepocket.viewmodels.DetailActivityViewModelFactory
 import com.example.pokepocket.viewstate.Error
 import com.example.pokepocket.viewstate.Loading
 import com.example.pokepocket.viewstate.Success
-import com.example.pokepocket.viewstate.ViewState
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : AppCompatActivity() {
-    private val viewmodelFactory by lazy { DetailActivityViewModelFactory(this) }
+    private val viewmodelFactory by lazy { DetailActivityViewModelFactory() }
     private val viewModel: DetailActivityViewModel by viewModels {
         viewmodelFactory
     }
@@ -62,7 +60,7 @@ class DetailActivity : AppCompatActivity() {
             .into(pokemon_image)
         pokemon_name.text = nameFromMainActivity
 
-        viewModel.pokemonInfoData.observe(this, Observer<ViewState<PokemonInfo>> { viewState ->
+        viewModel.pokemonInfoData.observe(this, { viewState ->
             when(viewState){
                 is Success -> {
                     detail_progress_bar.hide()

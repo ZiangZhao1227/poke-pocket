@@ -5,6 +5,8 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -16,16 +18,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import com.example.pokepocket.R
 import com.example.pokepocket.databinding.ActivityMapsBinding
+import com.example.pokepocket.extensions.show
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.Gson
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -72,7 +82,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         requestLocationPermission()
         //if no pokemons in shared pref
-        initializePokemonCharacters()
 
     }
 
@@ -131,8 +140,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         init {
             playerLocation = Location("MyProvider")
-            playerLocation?.latitude = 60.17
-            playerLocation?.longitude = 24.95
+            playerLocation?.latitude = 0.0
+            playerLocation?.longitude = 0.0
         }
 
         override fun onLocationChanged(updatedLocation: Location?) {
@@ -155,57 +164,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    private fun initializePokemonCharacters() {
-        // refers to the class PokemonCharacter
-        pokemonCharacters.add(
-            PokemonCharacter(
-                "This is Pikachu",
-                "I'm hungry",
-                R.drawable.img_pikachu,
-                60.22436,
-                24.75823
-            )
-        )
-        pokemonCharacters.add(
-            PokemonCharacter(
-                "This is Haunter",
-                "Be afraid!",
-                R.drawable.img_haunter,
-                60.21467,
-                24.81200
-            )
-        )
-        pokemonCharacters.add(
-            PokemonCharacter(
-                "This is Vaporeon",
-                "I'm thirsty",
-                R.drawable.img_vaporeon,
-                60.203125,
-                24.656118
-            )
-        )
-        pokemonCharacters.add(
-            PokemonCharacter(
-                "This is Zapdos",
-                "I'm the most powerful!",
-                R.drawable.img_zapdos,
-                60.14438,
-                24.98964
-            )
-        )
-        pokemonCharacters.add(
-            PokemonCharacter(
-                "This is Charizard",
-                "I will burn you!",
-                R.drawable.img_charizard,
-                60.22396,
-                24.75841
-            )
-        )
-        saveData()
-    }
-
-    private fun saveData() {
+/*    private fun saveData() {
         // method for saving the data in array list.
         // creating a variable for storing data in
         // shared preferences.
@@ -228,7 +187,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         editor.apply()
 
         Log.d("saveee","save data from array list $json")
-    }
+    }*/
 
    private fun popNotify(name:String) {
         createNotificationChannel()
@@ -241,6 +200,77 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .build()
         NotificationManagerCompat.from(this@MapsActivity).notify(1, notif)
 
+    }
+
+    private fun getRandomLocation(x0: Double, y0: Double, radius: Int) : LatLng {
+        val random = Random()
+
+        // Convert radius from meters to degrees
+        val radiusInDegrees = (radius / 111000f).toDouble()
+        val u = random.nextDouble()
+        val v = random.nextDouble()
+        val w = radiusInDegrees * sqrt(u)
+        val t = 2 * Math.PI * v
+        val x = w * cos(t)
+        val y = w * sin(t)
+
+        // Adjust the x-coordinate for the shrinking of the east-west distances
+        val newX = x / cos(Math.toRadians(y0))
+        val foundLongitude = newX + x0
+        val foundLatitude = y + y0
+        Log.d("txt","Longitude: $foundLongitude  Latitude: $foundLatitude")
+
+        return LatLng(foundLongitude,foundLatitude)
+    }
+
+    private fun setMarkerOnRandomLocations(map: GoogleMap) {
+        for (i in 0..5) {
+            when(i){
+                0 -> changeIcon(map, R.drawable.img_pikachu)
+                1 -> changeIcon(map, R.drawable.img_haunter)
+                2 -> changeIcon(map, R.drawable.img_charizard)
+                3 -> changeIcon(map, R.drawable.img_vaporeon)
+                4 -> changeIcon(map, R.drawable.img_zapdos)
+            }
+
+        }
+    }
+
+    private fun changeIcon(map: GoogleMap, drawable: Int){
+        map.addMarker(
+            MarkerOptions().position(
+                getRandomLocation(
+                    playerLocation!!.latitude,
+                    playerLocation!!.longitude,
+                    35
+                )
+            )
+                .title("run")
+        )?.setIcon(
+
+            getBitmapDescriptorFromVector(
+                this,
+                drawable
+            )
+        )
+    }
+
+    private fun getBitmapDescriptorFromVector(
+        context: Context,
+        vectorDrawableResourceId: Int
+    ): BitmapDescriptor? {
+
+        val vectorDrawable = ContextCompat.getDrawable(context, vectorDrawableResourceId)
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable!!.intrinsicWidth,
+            vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
+        vectorDrawable.draw(canvas)
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
 
@@ -279,6 +309,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // overrides the run fun of the NewThread class
         override fun run() {
             super.run()
+
             // for always execute try block
             while (true) {
                 // if the player, hasn't moved at all
@@ -296,34 +327,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         // Add a marker for player's location
                         val plrLocation =
                             LatLng(playerLocation!!.latitude, playerLocation!!.longitude)
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(plrLocation, 14.0f))
+
+                        setMarkerOnRandomLocations(mMap)
                         mMap.addMarker(
                             MarkerOptions().position(plrLocation).title("Player")
                                 .snippet("Let's Go !")
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.player))
                         )
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(plrLocation, 14.0f))
+
 
                         for (pokemonCharacterIndex in 0.until(pokemonCharacters.size)) {
 
                             val pc = pokemonCharacters[pokemonCharacterIndex]
                             //in this case it will show the pokemon character on the map
-                            if (pc.isDefeated == false) {
 
-                                val pcLocation =
-                                    LatLng(pc.location!!.latitude, pc.location!!.longitude)
-                                mMap.addMarker(
-                                    MarkerOptions()
-                                        .position(pcLocation)
-                                        .title(pc.titleOfPokemon)
-                                        .snippet(pc.message)
-                                        .icon(BitmapDescriptorFactory.fromResource(pc.iconOfPokemon!!))
-                                )
 
-                                // when u catch the pokemon, when usersLocation == pokemonLocation, it will disappear from map
-                                Log.d(
-                                    "Proximity",
-                                    "distance & accuracy ${playerLocation?.accuracy}"
-                                )
                                 if (playerLocation!!.distanceTo(pc.location) < 1 + if(playerLocation!!.accuracy > 15) 15f else playerLocation!!.accuracy) {
 
                                     Toast.makeText(
@@ -335,9 +354,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                     pc.isDefeated = true
                                     //then it updates the array list
                                     pokemonCharacters[pokemonCharacterIndex] = pc
-                                    saveData()
+                                  //  saveData()
                                 }
-                            }
+
                         }
                     }
                     sleep(1000)
