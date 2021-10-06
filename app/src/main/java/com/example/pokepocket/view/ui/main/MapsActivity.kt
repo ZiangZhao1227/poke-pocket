@@ -10,6 +10,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -32,7 +33,6 @@ import com.google.android.gms.maps.model.Marker
 
 
 
-
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
@@ -43,6 +43,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var locationManager: LocationManager? = null
     private var locationListener: PlayerLocationListener? = null
     private var currentLocationMarker: Marker? = null
+    private var pokemonCharacters: ArrayList<LatLng> = ArrayList()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -151,23 +153,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // creating a variable for storing data in
         // shared preferences.
         val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
-
         // creating a variable for editor to
         // store data in shared preferences.
         val editor = sharedPreferences.edit()
-
         // creating a new variable for gson.
         val gson = Gson()
-
         // getting data from gson and storing it in a string.
         val json = gson.toJson(pokemonCharacters)
-
         editor.putString("pokemon", json)
-
         // below line is to apply changes
         // and save data in shared prefs.
         editor.apply()
-
         Log.d("saveee","save data from array list $json")
     }*/
 
@@ -188,12 +184,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val foundLongitude = newX + x0
         val foundLatitude = y + y0
         Log.d("txt","Longitude: $foundLongitude  Latitude: $foundLatitude")
-
+        pokemonCharacters.add(LatLng(foundLatitude,foundLongitude))
+        Log.d("show","$pokemonCharacters")
         return LatLng(foundLongitude,foundLatitude)
     }
 
     private fun setMarkerOnRandomLocations(map: GoogleMap) {
-        for (i in 0..5) {
+        for (i in 0..4) {
             when(i){
                 0 -> changeIcon(map, R.drawable.img_pikachu,"Pikachu")
                 1 -> changeIcon(map, R.drawable.img_haunter,"Haunter")
@@ -240,7 +237,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
-
 
     private fun accessUserLocation() {
         // calls requestLocationUpdates if the location of player changed in 2 meters, updates every 1 second
@@ -296,6 +292,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.player))
                         )
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(plrLocation, 14.0f))
+
+                        for (pokemonCharacterIndex in 0.until(pokemonCharacters.size)) {
+                            val pokeLocation = LatLng(pokemonCharacters[pokemonCharacterIndex].latitude,pokemonCharacters[pokemonCharacterIndex].latitude)
+                            Log.d("dis","${pokeLocation}")
+                            val PokeLocation = Location("pokemonLocation")
+                            PokeLocation.latitude = pokemonCharacters[pokemonCharacterIndex].latitude
+                            PokeLocation.longitude = pokemonCharacters[pokemonCharacterIndex].latitude
+                            Log.d("distance","${playerLocation!!.distanceTo(PokeLocation)}")
+                        if ((playerLocation!!.distanceTo(PokeLocation)) < 3948787 + playerLocation!!.accuracy) {
+                            Toast.makeText(
+                                this@MapsActivity,
+                                "pokemon just disappeared",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            Log.d("afterca","${pokemonCharacters}")
+                        }
+                            }
                     }
                     sleep(1000)
                 } catch (exception: Exception) {
