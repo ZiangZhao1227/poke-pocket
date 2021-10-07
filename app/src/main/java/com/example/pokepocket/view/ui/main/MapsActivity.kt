@@ -27,6 +27,12 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 import com.google.android.gms.maps.model.LatLng
+import android.preference.PreferenceManager
+
+import android.content.SharedPreferences
+
+
+
 
 
 
@@ -48,13 +54,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var numberOfBalls:Int = 0
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        numberOfBalls = loadData()
+        tv_numbers.text = numberOfBalls.toString()
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -151,24 +158,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-/*    private fun saveData() {
-        // method for saving the data in array list.
-        // creating a variable for storing data in
-        // shared preferences.
-        val sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE)
-        // creating a variable for editor to
-        // store data in shared preferences.
-        val editor = sharedPreferences.edit()
-        // creating a new variable for gson.
-        val gson = Gson()
-        // getting data from gson and storing it in a string.
-        val json = gson.toJson(pokemonCharacters)
-        editor.putString("pokemon", json)
-        // below line is to apply changes
-        // and save data in shared prefs.
+    private fun saveData(value:Int) {
+        val sharedPreference =  getSharedPreferences("PREFERENCE_NAME",Context.MODE_PRIVATE)
+        var editor = sharedPreference.edit()
+        editor.putInt("value",value)
         editor.apply()
-        Log.d("saveee","save data from array list $json")
-    }*/
+    }
+
+    private fun loadData(): Int{
+        val sharedPreference =  getSharedPreferences("PREFERENCE_NAME",Context.MODE_PRIVATE)
+        Log.d("number","${sharedPreference.getInt("value",0)}")
+        return sharedPreference.getInt("value",0)
+    }
 
     fun distance(StartP: LatLng, EndP: LatLng): Double {
         val lat1 = StartP.latitude
@@ -304,12 +305,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         mMap.setOnMarkerClickListener{
                             Log.d("marker","${it.position}")
                             Log.d("distance","${distance(plrLocation,it.position)}")
-                            var distanceBetweenPokeAndPlayer = distance(plrLocation,it.position)
+                            val distanceBetweenPokeAndPlayer = distance(plrLocation,it.position)
                             if (distanceBetweenPokeAndPlayer== 0.0){
                                 Toast.makeText(this@MapsActivity,"How nice",Toast.LENGTH_SHORT).show()
                             }else if(0.0 < distanceBetweenPokeAndPlayer && distanceBetweenPokeAndPlayer < 30.0){
                                 Toast.makeText(this@MapsActivity,"Got a Poké Ball",Toast.LENGTH_SHORT).show()
                                 numberOfBalls++
+                                saveData(numberOfBalls)
                                 tv_numbers.text = numberOfBalls.toString()
                                 it.remove()
                             }else if (distanceBetweenPokeAndPlayer > 30.0){
