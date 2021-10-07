@@ -296,7 +296,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             CircleOptions()
                                 .center(plrLocation)
                                 .strokeColor(R.color.pokemon_submain)
-                                .radius(5.0))
+                                .radius(30.0))
 
                         for (pokemonCharacterIndex in 0.until(pokemonCharacters.size)) {
                             val pokeLocation = LatLng(pokemonCharacters[pokemonCharacterIndex].latitude,pokemonCharacters[pokemonCharacterIndex].latitude)
@@ -308,8 +308,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                                     markerList.forEach{
                                         mMap.setOnMarkerClickListener{
-                                            if ((playerLocation!!.distanceTo(PokeLocation)) < 5) {
+                                            if ((playerLocation!!.distanceTo(PokeLocation)) < 30 + playerLocation!!.accuracy) {
                                                 it.remove()
+                                                Toast.makeText(this@MapsActivity,"${it.title} has been catched",Toast.LENGTH_SHORT).show()
                                             }
                                             true
                                         }
