@@ -33,5 +33,59 @@
         app:layout_constraintVertical_bias="0.797"
         app:srcCompat="@drawable/ic_baseline_catching_pokemon_24" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="28dp"
+        app:layout_constraintBottom_toTopOf="@+id/show_pokemon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="8dp"
+            android:contentDescription="@string/number_of_pokemon_balls"
+            android:text="@string/pokeball_numbers_0"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_view"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_numbers"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/_0"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="parent">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/this_is_an_image"
+            android:maxWidth="60dp"
+            android:maxHeight="60dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/pokeball"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -26,5 +26,9 @@
     <string name="channel_name">channel name</string>
     <string name="channel_description">channel description</string>
     <string name="notify_title">pokemon captured</string>
+    <string name="pokeball_numbers_0">Numbers:</string>
+    <string name="number_of_pokemon_balls">Number of pokemon balls</string>
+    <string name="_0">0</string>
+    <string name="this_is_an_image">this is an image</string>
 
 </resources>

@@ -26,6 +26,10 @@ import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
+import com.google.android.gms.maps.model.LatLng
+
+
+
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -39,10 +43,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var locationListener: PlayerLocationListener? = null
     private var currentLocationMarker: Marker? = null
     private var currentLocationCircle: Circle? = null
-    private var pokemonCharacters: ArrayList<LatLng> = ArrayList()
     private var currentPlayerLatitude = 0.0
     private var currentPlayerLongtitude = 0.0
-    var markerList: ArrayList<Marker> = ArrayList()
+    private var numberOfBalls:Int = 0
+
 
 
 
@@ -166,6 +170,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         Log.d("saveee","save data from array list $json")
     }*/
 
+    fun distance(StartP: LatLng, EndP: LatLng): Double {
+        val lat1 = StartP.latitude
+        val lat2 = EndP.latitude
+        val lon1 = StartP.longitude
+        val lon2 = EndP.longitude
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2)
+        val c = 2 * Math.asin(Math.sqrt(a))
+        return 6366000 * c
+    }
+
     private fun getRandomLocation(x0: Double, y0: Double, radius: Int) : LatLng {
         val random = Random()
 
@@ -182,39 +200,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val newX = x / cos(Math.toRadians(y0))
         val foundLongitude = newX + x0
         val foundLatitude = y + y0
-        Log.d("txt","Longitude: $foundLongitude  Latitude: $foundLatitude")
-        pokemonCharacters.add(LatLng(foundLongitude,foundLatitude))
-        Log.d("show","$pokemonCharacters")
         return LatLng(foundLongitude,foundLatitude)
     }
 
     private fun setMarkerOnRandomLocations(map: GoogleMap) {
-        for (i in 0..4) {
-            when(i){
-                0 -> changeIcon(map, R.drawable.img_pikachu,"Pikachu")
-                1 -> changeIcon(map, R.drawable.img_haunter,"Haunter")
-                2 -> changeIcon(map, R.drawable.img_charizard,"Charizard")
-                3 -> changeIcon(map, R.drawable.img_vaporeon,"Vaporeon")
-                4 -> changeIcon(map, R.drawable.img_zapdos,"Zapdos")
-            }
-        }
-        Log.d("marker","$markerList")
-    }
-
-    private fun changeIcon(map: GoogleMap, drawable: Int,content: String){
-        val marker = map.addMarker(
+        for (i in 0..5) {
+            map.addMarker(
                 MarkerOptions().position(
                     getRandomLocation(
                         currentPlayerLatitude,
                         currentPlayerLongtitude,
-                        90
+                        50
                     )
                 )
-                    .title(content)
-                    .icon(getBitmapDescriptorFromVector(this,drawable))
+                    .title("Poké Ball")
+                    .icon(getBitmapDescriptorFromVector(this,R.drawable.ic_baseline_catching_pokemon_48))
             )
-        markerList.add(marker)
-
+        }
     }
 
     private fun getBitmapDescriptorFromVector(
@@ -299,30 +301,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 .strokeColor(R.color.pokemon_submain)
                                 .radius(30.0))
 
-                        for (pokemonCharacterIndex in 0.until(pokemonCharacters.size)) {
-                            val PokeLocation = Location("pokemonLocation")
-                            PokeLocation.latitude = pokemonCharacters[pokemonCharacterIndex].latitude
-                            PokeLocation.longitude = pokemonCharacters[pokemonCharacterIndex].longitude
-                            Log.d("distance","${playerLocation!!.distanceTo(PokeLocation)}")
-
-                                    markerList.forEach{
-                                        mMap.setOnMarkerClickListener{that ->
-                                            Log.d("marker clicked", "who I am? $it and $that ")
-                                            if ((playerLocation!!.distanceTo(PokeLocation)) < 30 + playerLocation!!.accuracy) {
-                                                if (it == that) {
-                                                    it.remove()
-                                                }
-                                                Toast.makeText(this@MapsActivity,"${that.title} has been catched",Toast.LENGTH_SHORT).show()
-                                            }
-                                            else{
-                                                Toast.makeText(this@MapsActivity,"${that.title} is ${playerLocation!!.distanceTo(PokeLocation).toInt()} from you",Toast.LENGTH_SHORT).show()
-                                            }
-                                            true
-                                        }
-
-                                    }
+                        mMap.setOnMarkerClickListener{
+                            Log.d("marker","${it.position}")
+                            Log.d("distance","${distance(plrLocation,it.position)}")
+                            var distanceBetweenPokeAndPlayer = distance(plrLocation,it.position)
+                            if (distanceBetweenPokeAndPlayer== 0.0){
+                                Toast.makeText(this@MapsActivity,"How nice",Toast.LENGTH_SHORT).show()
+                            }else if(0.0 < distanceBetweenPokeAndPlayer && distanceBetweenPokeAndPlayer < 30.0){
+                                Toast.makeText(this@MapsActivity,"Got a Poké Ball",Toast.LENGTH_SHORT).show()
+                                numberOfBalls++
+                                tv_numbers.text = numberOfBalls.toString()
+                                it.remove()
+                            }else if (distanceBetweenPokeAndPlayer > 30.0){
+                                Toast.makeText(this@MapsActivity,"Try to get closer about ${(distanceBetweenPokeAndPlayer-30.0).toInt()} meters",Toast.LENGTH_SHORT).show()
+                            }else{
+                                Toast.makeText(this@MapsActivity,"Something went wrong",Toast.LENGTH_SHORT).show()
+                            }
+                            true
                         }
-
                     }
                     sleep(1000)
                 } catch (exception: Exception) {
