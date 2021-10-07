@@ -23,11 +23,11 @@ class PokemonListItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemV
         itemView.pokemon_name_text_view.text = pokemonModel.name
         Glide.with(itemView.context).load(pokemonModel.getImageUrl())
             .listener(GlidePalette.with(pokemonModel.getImageUrl())
-                    .use(BitmapPalette.Profile.VIBRANT_LIGHT)
+                    .use(BitmapPalette.Profile.MUTED_DARK)
                     .intoCallBack { palette ->
                         val rgb = palette?.dominantSwatch?.rgb
                         if (rgb != null) {
-                            itemView.item_pokemon_card_view.setCardBackgroundColor(rgb)
+                            itemView.cardView.setBackgroundColor(rgb)
                         }
                     }
                     .crossfade(true))

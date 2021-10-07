@@ -2,6 +2,7 @@ package com.example.pokepocket.view.ui.main
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Toast
@@ -23,6 +24,7 @@ import com.example.pokepocket.viewstate.Loading
 import com.example.pokepocket.viewstate.Success
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_pokemon_list.*
 
 class MainActivity : AppCompatActivity(), ConnReceiver.ConnReceiverListener {
     // Using by lazy so the database and the repository are only created when they're needed rather than when the application starts
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity(), ConnReceiver.ConnReceiverListener {
         registerReceiver(ConnReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     //to display how many Pokemons will display in one raw
         val pokemonList: RecyclerView = findViewById(R.id.pokemon_recycler_view)
-        pokemonList.layoutManager = GridLayoutManager(this, 1)
+        pokemonList.layoutManager = GridLayoutManager(this, 2)
 
         val pokemonListAdapter = PokemonListAdapter(this)
         pokemonList.adapter = pokemonListAdapter
