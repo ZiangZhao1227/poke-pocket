@@ -44,6 +44,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var locationListener: PlayerLocationListener? = null
     private var currentLocationMarker: Marker? = null
     private var pokemonCharacters: ArrayList<LatLng> = ArrayList()
+    private var currentPlayerLatitude = 0.0
+    private var currentPlayerLongtitude = 0.0
+
 
 
 
@@ -184,7 +187,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val foundLongitude = newX + x0
         val foundLatitude = y + y0
         Log.d("txt","Longitude: $foundLongitude  Latitude: $foundLatitude")
-        pokemonCharacters.add(LatLng(foundLatitude,foundLongitude))
+        pokemonCharacters.add(LatLng(foundLongitude,foundLatitude))
         Log.d("show","$pokemonCharacters")
         return LatLng(foundLongitude,foundLatitude)
     }
@@ -206,8 +209,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         map.addMarker(
             MarkerOptions().position(
                 getRandomLocation(
-                    playerLocation!!.latitude,
-                    playerLocation!!.longitude,
+                    currentPlayerLatitude,
+                    currentPlayerLongtitude,
                     55
                 )
             )
@@ -285,6 +288,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         // Add a marker for player's location
                         val plrLocation =
                             LatLng(playerLocation!!.latitude, playerLocation!!.longitude)
+                        currentPlayerLatitude = playerLocation!!.latitude
+                        currentPlayerLongtitude = playerLocation!!.longitude
                         currentLocationMarker?.remove()
                         currentLocationMarker = mMap.addMarker(
                             MarkerOptions().position(plrLocation).title("Player")
@@ -298,16 +303,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             Log.d("dis","${pokeLocation}")
                             val PokeLocation = Location("pokemonLocation")
                             PokeLocation.latitude = pokemonCharacters[pokemonCharacterIndex].latitude
-                            PokeLocation.longitude = pokemonCharacters[pokemonCharacterIndex].latitude
+                            PokeLocation.longitude = pokemonCharacters[pokemonCharacterIndex].longitude
                             Log.d("distance","${playerLocation!!.distanceTo(PokeLocation)}")
-                        if ((playerLocation!!.distanceTo(PokeLocation)) < 3948787 + playerLocation!!.accuracy) {
-                            Toast.makeText(
-                                this@MapsActivity,
-                                "pokemon just disappeared",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        if ((playerLocation!!.distanceTo(PokeLocation)) < 5 + playerLocation!!.accuracy) {
 
-                            Log.d("afterca","${pokemonCharacters}")
+                            mMap.setOnMarkerClickListener {
+                                Toast.makeText(this@MapsActivity,"pokemon removed",Toast.LENGTH_SHORT).show()
+                                true }
                         }
                             }
                     }
