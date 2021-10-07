@@ -198,6 +198,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 4 -> changeIcon(map, R.drawable.img_zapdos,"Zapdos")
             }
         }
+        Log.d("marker","$markerList")
     }
 
     private fun changeIcon(map: GoogleMap, drawable: Int,content: String){
@@ -206,14 +207,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     getRandomLocation(
                         currentPlayerLatitude,
                         currentPlayerLongtitude,
-                        55
+                        90
                     )
                 )
                     .title(content)
                     .icon(getBitmapDescriptorFromVector(this,drawable))
             )
         markerList.add(marker)
-        Log.d("marker","$markerList")
+
     }
 
     private fun getBitmapDescriptorFromVector(
@@ -289,7 +290,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 .snippet("Let's Go !")
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.player))
                         )
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(plrLocation, 14.0f))
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(plrLocation, 18.0f))
 
                         currentLocationCircle?.remove()
                         currentLocationCircle = mMap.addCircle(
@@ -299,18 +300,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 .radius(30.0))
 
                         for (pokemonCharacterIndex in 0.until(pokemonCharacters.size)) {
-                            val pokeLocation = LatLng(pokemonCharacters[pokemonCharacterIndex].latitude,pokemonCharacters[pokemonCharacterIndex].latitude)
-                            Log.d("dis","${pokeLocation}")
                             val PokeLocation = Location("pokemonLocation")
                             PokeLocation.latitude = pokemonCharacters[pokemonCharacterIndex].latitude
                             PokeLocation.longitude = pokemonCharacters[pokemonCharacterIndex].longitude
                             Log.d("distance","${playerLocation!!.distanceTo(PokeLocation)}")
 
                                     markerList.forEach{
-                                        mMap.setOnMarkerClickListener{
+                                        mMap.setOnMarkerClickListener{that ->
+                                            Log.d("marker clicked", "who I am? $it and $that ")
                                             if ((playerLocation!!.distanceTo(PokeLocation)) < 30 + playerLocation!!.accuracy) {
-                                                it.remove()
-                                                Toast.makeText(this@MapsActivity,"${it.title} has been catched",Toast.LENGTH_SHORT).show()
+                                                if (it == that) {
+                                                    it.remove()
+                                                }
+                                                Toast.makeText(this@MapsActivity,"${that.title} has been catched",Toast.LENGTH_SHORT).show()
+                                            }
+                                            else{
+                                                Toast.makeText(this@MapsActivity,"${that.title} is ${playerLocation!!.distanceTo(PokeLocation).toInt()} from you",Toast.LENGTH_SHORT).show()
                                             }
                                             true
                                         }
