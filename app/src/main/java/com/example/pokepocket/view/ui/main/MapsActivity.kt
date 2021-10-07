@@ -20,17 +20,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.activity_maps.*
 import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
-import com.google.android.gms.maps.model.Marker
-
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -43,10 +38,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var locationManager: LocationManager? = null
     private var locationListener: PlayerLocationListener? = null
     private var currentLocationMarker: Marker? = null
+    private var currentLocationCircle: Circle? = null
     private var pokemonCharacters: ArrayList<LatLng> = ArrayList()
     private var currentPlayerLatitude = 0.0
     private var currentPlayerLongtitude = 0.0
-
+    var markerList: ArrayList<Marker> = ArrayList()
 
 
 
@@ -201,26 +197,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 3 -> changeIcon(map, R.drawable.img_vaporeon,"Vaporeon")
                 4 -> changeIcon(map, R.drawable.img_zapdos,"Zapdos")
             }
-
         }
     }
 
     private fun changeIcon(map: GoogleMap, drawable: Int,content: String){
-        map.addMarker(
-            MarkerOptions().position(
-                getRandomLocation(
-                    currentPlayerLatitude,
-                    currentPlayerLongtitude,
-                    55
+        val marker = map.addMarker(
+                MarkerOptions().position(
+                    getRandomLocation(
+                        currentPlayerLatitude,
+                        currentPlayerLongtitude,
+                        55
+                    )
                 )
+                    .title(content)
+                    .icon(getBitmapDescriptorFromVector(this,drawable))
             )
-                .title(content)
-        )?.setIcon(
-            getBitmapDescriptorFromVector(
-                this,
-                drawable
-            )
-        )
+        markerList.add(marker)
+        Log.d("marker","$markerList")
     }
 
     private fun getBitmapDescriptorFromVector(
@@ -298,6 +291,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         )
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(plrLocation, 14.0f))
 
+                        currentLocationCircle?.remove()
+                        currentLocationCircle = mMap.addCircle(
+                            CircleOptions()
+                                .center(plrLocation)
+                                .strokeColor(R.color.pokemon_submain)
+                                .radius(5.0))
+
                         for (pokemonCharacterIndex in 0.until(pokemonCharacters.size)) {
                             val pokeLocation = LatLng(pokemonCharacters[pokemonCharacterIndex].latitude,pokemonCharacters[pokemonCharacterIndex].latitude)
                             Log.d("dis","${pokeLocation}")
@@ -305,13 +305,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             PokeLocation.latitude = pokemonCharacters[pokemonCharacterIndex].latitude
                             PokeLocation.longitude = pokemonCharacters[pokemonCharacterIndex].longitude
                             Log.d("distance","${playerLocation!!.distanceTo(PokeLocation)}")
-                        if ((playerLocation!!.distanceTo(PokeLocation)) < 5 + playerLocation!!.accuracy) {
 
-                            mMap.setOnMarkerClickListener {
-                                Toast.makeText(this@MapsActivity,"pokemon removed",Toast.LENGTH_SHORT).show()
-                                true }
+                                    markerList.forEach{
+                                        mMap.setOnMarkerClickListener{
+                                            if ((playerLocation!!.distanceTo(PokeLocation)) < 5) {
+                                                it.remove()
+                                            }
+                                            true
+                                        }
+
+                                    }
                         }
-                            }
+
                     }
                     sleep(1000)
                 } catch (exception: Exception) {
