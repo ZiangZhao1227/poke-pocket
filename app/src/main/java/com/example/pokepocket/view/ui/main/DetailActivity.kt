@@ -1,7 +1,9 @@
 package com.example.pokepocket.view.ui.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +28,7 @@ class DetailActivity : AppCompatActivity() {
     private val viewModel: DetailActivityViewModel by viewModels {
         viewmodelFactory
     }
+    private var numberOfBalls:Int = 0
 
     companion object {
         const val ARG_POKEMON_NAME = "pokemon_name"
@@ -36,11 +39,16 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
+        val sharedPreference =  getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+        numberOfBalls = sharedPreference.getInt("value",0)
+        tv_numberOfBalls.text = numberOfBalls.toString()
+
         supportActionBar?.elevation = 0f
 
         val intent: Intent = intent
         val nameFromMainActivity = intent.getStringExtra(ARG_POKEMON_NAME) ?: "pikachu"
         val imageUrl = intent.getStringExtra(ARG_POKEMON_IMAGE_URL)
+
 
         Glide.with(this)
             .load(imageUrl)
@@ -82,24 +90,25 @@ class DetailActivity : AppCompatActivity() {
                     }
                     height.text = pokemonInfo.getHeightString()
                     weight.text = pokemonInfo.getWeightString()
+                    tv_id.text = pokemonInfo.getIdString()
 
-                    progress_hp.labelText = pokemonInfo.getHpString()
+
                     progress_hp.max = PokemonInfo.maxHp.toFloat()
                     progress_hp.progress = pokemonInfo.getHp().toFloat()
 
-                    progress_attack.labelText = pokemonInfo.getAttackString()
+
                     progress_attack.max = PokemonInfo.maxAttack.toFloat()
                     progress_attack.progress = pokemonInfo.getAttack().toFloat()
 
-                    progress_defense.labelText = pokemonInfo.getDefenseString()
+
                     progress_defense.max = PokemonInfo.maxDefense.toFloat()
                     progress_defense.progress = pokemonInfo.getDefense().toFloat()
 
-                    progress_speed.labelText = pokemonInfo.getSpeedString()
+
                     progress_speed.max = PokemonInfo.maxSpeed.toFloat()
                     progress_speed.progress = pokemonInfo.getSpeed().toFloat()
 
-                    progress_exp.labelText = pokemonInfo.getExpString()
+
                     progress_exp.max = PokemonInfo.maxExp.toFloat()
                     progress_exp.progress = pokemonInfo.getExp().toFloat()
                 }
@@ -111,11 +120,21 @@ class DetailActivity : AppCompatActivity() {
                     detail_progress_bar.show()
                 }
             }
-
-
-
         })
 
         viewModel.fetchPokemonDetails(nameFromMainActivity)
+
+        iv_catch.setOnClickListener {
+            Toast.makeText(this,"throw a poke ball",Toast.LENGTH_SHORT).show()
+            numberOfBalls--
+            tv_numberOfBalls.text = numberOfBalls.toString()
+            saveData(numberOfBalls)
+        }
+    }
+    private fun saveData(value:Int) {
+        val sharedPreference =  getSharedPreferences("PREFERENCE_NAME",Context.MODE_PRIVATE)
+        val editor = sharedPreference.edit()
+        editor.putInt("value",value)
+        editor.apply()
     }
 }

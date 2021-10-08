@@ -11,30 +11,65 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/pokemon_image_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:gravity="center">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/pokemon_image"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/this_is_how_many_pokemon_balls_you_have_left"
                 android:scaleType="centerCrop"
-                app:layout_constraintBottom_toTopOf="@+id/pokemon_name"
+                android:transitionName="transition_pokemon"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars"
-                android:transitionName="transition_pokemon" />
-        </LinearLayout>
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/tv_numberOfBalls"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_0"
+                android:textSize="35sp"
+                android:textStyle="bold"
+                android:paddingHorizontal="4dp"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/iv_catch"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/pokemon_image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.924">
+
+            </TextView>
+
+            <ImageView
+                android:id="@+id/iv_catch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/this_is_an_image"
+                android:maxWidth="45dp"
+                android:maxHeight="45dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/pokeball"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_numberOfBalls"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_numberOfBalls"
+                app:layout_constraintVertical_bias="1.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/pokemon_name"
@@ -314,6 +349,19 @@
             tools:visibility="visible"
             android:visibility="gone"/>
 
-
+        <TextView
+            android:id="@+id/tv_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/id"
+            android:textColor="@color/pokemon_submain"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/pokemon_name"
+            app:layout_constraintEnd_toStartOf="@+id/pokemon_name"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/pokemon_name"
+            app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

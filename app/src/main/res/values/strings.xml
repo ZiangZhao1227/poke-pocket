@@ -30,5 +30,7 @@
     <string name="number_of_pokemon_balls">Number of pokemon balls</string>
     <string name="_0">0</string>
     <string name="this_is_an_image">this is an image</string>
+    <string name="this_is_how_many_pokemon_balls_you_have_left">This is how many Pokemon balls you have left</string>
+    <string name="id">ID</string>
 
 </resources>

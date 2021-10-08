@@ -1,6 +1,6 @@
 package com.example.pokepocket.view.adapter
 
-import android.annotation.SuppressLint
+
 import android.app.ActivityOptions
 import android.content.Intent
 import android.view.LayoutInflater
@@ -69,7 +69,7 @@ class PokemonListAdapter(private val mainActivity: MainActivity) : RecyclerView.
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+
     fun setPokemonList(listOfPokemons : List<Pokemon>){
         this.listOfPokemons = listOfPokemons
         notifyDataSetChanged()

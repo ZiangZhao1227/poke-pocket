@@ -27,16 +27,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 import com.google.android.gms.maps.model.LatLng
-import android.preference.PreferenceManager
-
-import android.content.SharedPreferences
-
-
-
-
-
-
-
+import kotlin.math.asin
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -72,11 +63,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         locationListener = PlayerLocationListener()
 
         requestLocationPermission()
-        //if no pokemons in shared pref
+
         show_pokemon.setOnClickListener {
             setMarkerOnRandomLocations(mMap)
         }
-
     }
 
     /**
@@ -160,7 +150,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun saveData(value:Int) {
         val sharedPreference =  getSharedPreferences("PREFERENCE_NAME",Context.MODE_PRIVATE)
-        var editor = sharedPreference.edit()
+        val editor = sharedPreference.edit()
         editor.putInt("value",value)
         editor.apply()
     }
@@ -178,10 +168,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val lon2 = EndP.longitude
         val dLat = Math.toRadians(lat2 - lat1)
         val dLon = Math.toRadians(lon2 - lon1)
-        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2)
-        val c = 2 * Math.asin(Math.sqrt(a))
+        val a = sin(dLat / 2) * sin(dLat / 2) +
+                cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                sin(dLon / 2) * sin(dLon / 2)
+        val c = 2 * asin(sqrt(a))
         return 6366000 * c
     }
 
@@ -205,7 +195,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setMarkerOnRandomLocations(map: GoogleMap) {
-        for (i in 0..5) {
+        for (i in 0..9) {
             map.addMarker(
                 MarkerOptions().position(
                     getRandomLocation(
@@ -293,14 +283,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 .snippet("Let's Go !")
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.player))
                         )
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(plrLocation, 18.0f))
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(plrLocation, 19.0f))
 
                         currentLocationCircle?.remove()
                         currentLocationCircle = mMap.addCircle(
                             CircleOptions()
                                 .center(plrLocation)
                                 .strokeColor(R.color.pokemon_submain)
-                                .radius(30.0))
+                                .radius(5.0))
 
                         mMap.setOnMarkerClickListener{
                             Log.d("marker","${it.position}")
@@ -308,14 +298,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             val distanceBetweenPokeAndPlayer = distance(plrLocation,it.position)
                             if (distanceBetweenPokeAndPlayer== 0.0){
                                 Toast.makeText(this@MapsActivity,"How nice",Toast.LENGTH_SHORT).show()
-                            }else if(0.0 < distanceBetweenPokeAndPlayer && distanceBetweenPokeAndPlayer < 30.0){
+                            }else if(0.0 < distanceBetweenPokeAndPlayer && distanceBetweenPokeAndPlayer < 5.0){
                                 Toast.makeText(this@MapsActivity,"Got a Poké Ball",Toast.LENGTH_SHORT).show()
                                 numberOfBalls++
                                 saveData(numberOfBalls)
                                 tv_numbers.text = numberOfBalls.toString()
                                 it.remove()
-                            }else if (distanceBetweenPokeAndPlayer > 30.0){
-                                Toast.makeText(this@MapsActivity,"Try to get closer about ${(distanceBetweenPokeAndPlayer-30.0).toInt()} meters",Toast.LENGTH_SHORT).show()
+                            }else if (distanceBetweenPokeAndPlayer > 5.0){
+                                Toast.makeText(this@MapsActivity,"Try to get closer about ${(distanceBetweenPokeAndPlayer - 5.0).toInt()} meters",Toast.LENGTH_SHORT).show()
                             }else{
                                 Toast.makeText(this@MapsActivity,"Something went wrong",Toast.LENGTH_SHORT).show()
                             }

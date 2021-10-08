@@ -49,11 +49,7 @@ data class PokemonInfo(
     fun getIdString(): String = String.format("#%03d", id)
     fun getWeightString(): String = String.format("%.1f KG", weight.toFloat() / 10)
     fun getHeightString(): String = String.format("%.1f M", height.toFloat() / 10)
-    fun getHpString(): String = "${getHp()}/$maxHp"
-    fun getAttackString(): String = "${getAttack()}/$maxAttack"
-    fun getDefenseString(): String = "${getDefense()}/$maxDefense"
-    fun getSpeedString(): String = "${getSpeed()}/$maxSpeed"
-    fun getExpString(): String = "${getExp()}/$maxExp"
+
 
     data class TypeResponse(
         @field:Json(name = "slot") val slot: Int,
@@ -65,10 +61,10 @@ data class PokemonInfo(
     )
 
     companion object {
-        const val maxHp = 300
-        const val maxAttack = 300
-        const val maxDefense = 300
-        const val maxSpeed = 300
+        const val maxHp = 400
+        const val maxAttack = 400
+        const val maxDefense = 400
+        const val maxSpeed = 400
         const val maxExp = 1000
     }
 }
