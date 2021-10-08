@@ -2,11 +2,18 @@ package com.example.pokepocket.view.ui.main
 
 import android.content.Context
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
 import com.example.pokepocket.Fragments.PokemonPopupFragment
 import com.example.pokepocket.Fragments.PokemonPopupFragmentFailed
@@ -26,12 +33,14 @@ import com.example.pokepocket.viewstate.Success
 import kotlinx.android.synthetic.main.activity_detail.*
 import java.util.*
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : AppCompatActivity(), SensorEventListener {
     private val viewmodelFactory by lazy { DetailActivityViewModelFactory() }
     private val viewModel: DetailActivityViewModel by viewModels {
         viewmodelFactory
     }
     private var numberOfBalls:Int = 0
+    private lateinit var sensorManager: SensorManager
+    private lateinit var image: ImageView
 
     companion object {
         const val ARG_POKEMON_NAME = "pokemon_name"
@@ -47,6 +56,13 @@ class DetailActivity : AppCompatActivity() {
         tv_numberOfBalls.text = numberOfBalls.toString()
 
         supportActionBar?.elevation = 0f
+
+        // Keeps phone in light mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        image = pokemon_image
+
+
 
         val intent: Intent = intent
         val nameFromMainActivity = intent.getStringExtra(ARG_POKEMON_NAME) ?: "pikachu"
@@ -133,6 +149,10 @@ class DetailActivity : AppCompatActivity() {
             tv_numberOfBalls.text = numberOfBalls.toString()
             saveData(numberOfBalls)
         }
+        pokemon_image.setOnClickListener {
+            Log.d("image","clicked")
+            setUpSensorStuff()
+        }
     }
 
     private fun saveData(value:Int) {
@@ -147,10 +167,57 @@ class DetailActivity : AppCompatActivity() {
         if (random == 1) {
             val dialog = PokemonPopupFragment()
             dialog.show(supportFragmentManager,"got pokemon")
-            
+            iv_catch.visibility = View.GONE
+            tv_numberOfBalls.visibility = View.GONE
         }else{
             val dialogFailed = PokemonPopupFragmentFailed()
             dialogFailed.show(supportFragmentManager,"failed pokemon")
         }
+    }
+
+    private fun setUpSensorStuff() {
+        // Create the sensor manager
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+
+        // Specify the sensor you want to listen to
+        sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)?.also { accelerometer ->
+            sensorManager.registerListener(
+                this,
+                accelerometer,
+                SensorManager.SENSOR_DELAY_FASTEST,
+                SensorManager.SENSOR_DELAY_FASTEST
+            )
+        }
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        // Checks for the sensor we have registered
+        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
+            //Log.d("Main", "onSensorChanged: sides ${event.values[0]} front/back ${event.values[1]} ")
+
+            // Sides = Tilting phone left(10) and right(-10)
+            val sides = event.values[0]
+
+            // Up/Down = Tilting phone up(10), flat (0), upside-down(-10)
+            val upDown = event.values[1]
+
+            image.apply {
+                rotationX = upDown * 3f
+                rotationY = sides * 3f
+                rotation = -sides
+                translationX = sides * -10
+                translationY = upDown * 10
+            }
+
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        return
+    }
+
+    override fun onDestroy() {
+        sensorManager.unregisterListener(this)
+        super.onDestroy()
     }
 }
