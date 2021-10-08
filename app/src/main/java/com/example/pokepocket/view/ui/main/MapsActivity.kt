@@ -290,7 +290,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             CircleOptions()
                                 .center(plrLocation)
                                 .strokeColor(R.color.pokemon_submain)
-                                .radius(5.0))
+                                .radius(35.0))
 
                         mMap.setOnMarkerClickListener{
                             Log.d("marker","${it.position}")
@@ -298,14 +298,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             val distanceBetweenPokeAndPlayer = distance(plrLocation,it.position)
                             if (distanceBetweenPokeAndPlayer== 0.0){
                                 Toast.makeText(this@MapsActivity,"How nice",Toast.LENGTH_SHORT).show()
-                            }else if(0.0 < distanceBetweenPokeAndPlayer && distanceBetweenPokeAndPlayer < 5.0){
+                            }else if(0.0 < distanceBetweenPokeAndPlayer && distanceBetweenPokeAndPlayer < 35.0){
                                 Toast.makeText(this@MapsActivity,"Got a Poké Ball",Toast.LENGTH_SHORT).show()
                                 numberOfBalls++
                                 saveData(numberOfBalls)
                                 tv_numbers.text = numberOfBalls.toString()
                                 it.remove()
-                            }else if (distanceBetweenPokeAndPlayer > 5.0){
-                                Toast.makeText(this@MapsActivity,"Try to get closer about ${(distanceBetweenPokeAndPlayer - 5.0).toInt()} meters",Toast.LENGTH_SHORT).show()
+                            }else if (distanceBetweenPokeAndPlayer > 35.0){
+                                Toast.makeText(this@MapsActivity,"Try to get closer about ${(distanceBetweenPokeAndPlayer - 35.0).toInt()} meters",Toast.LENGTH_SHORT).show()
                             }else{
                                 Toast.makeText(this@MapsActivity,"Something went wrong",Toast.LENGTH_SHORT).show()
                             }

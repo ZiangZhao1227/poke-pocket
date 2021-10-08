@@ -32,5 +32,8 @@
     <string name="this_is_an_image">this is an image</string>
     <string name="this_is_how_many_pokemon_balls_you_have_left">This is how many Pokemon balls you have left</string>
     <string name="id">ID</string>
-
+    <string name="gotcha">Gotcha</string>
+    <string name="congrats">Congratulations! You have successfully caught it!</string>
+    <string name="try_again">Try again</string>
+    <string name="oops">Oops! pokemon escaped this time please try again!</string>
 </resources>

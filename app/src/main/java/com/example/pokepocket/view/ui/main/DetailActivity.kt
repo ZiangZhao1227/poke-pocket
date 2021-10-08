@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.pokepocket.Fragments.PokemonPopupFragment
+import com.example.pokepocket.Fragments.PokemonPopupFragmentFailed
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 import com.example.pokepocket.R
@@ -22,6 +24,7 @@ import com.example.pokepocket.viewstate.Error
 import com.example.pokepocket.viewstate.Loading
 import com.example.pokepocket.viewstate.Success
 import kotlinx.android.synthetic.main.activity_detail.*
+import java.util.*
 
 class DetailActivity : AppCompatActivity() {
     private val viewmodelFactory by lazy { DetailActivityViewModelFactory() }
@@ -125,16 +128,29 @@ class DetailActivity : AppCompatActivity() {
         viewModel.fetchPokemonDetails(nameFromMainActivity)
 
         iv_catch.setOnClickListener {
-            Toast.makeText(this,"throw a poke ball",Toast.LENGTH_SHORT).show()
+            successFailed()
             numberOfBalls--
             tv_numberOfBalls.text = numberOfBalls.toString()
             saveData(numberOfBalls)
         }
     }
+
     private fun saveData(value:Int) {
         val sharedPreference =  getSharedPreferences("PREFERENCE_NAME",Context.MODE_PRIVATE)
         val editor = sharedPreference.edit()
         editor.putInt("value",value)
         editor.apply()
+    }
+
+    private fun successFailed() {
+        val random: Int = Random().nextInt(2)
+        if (random == 1) {
+            val dialog = PokemonPopupFragment()
+            dialog.show(supportFragmentManager,"got pokemon")
+            
+        }else{
+            val dialogFailed = PokemonPopupFragmentFailed()
+            dialogFailed.show(supportFragmentManager,"failed pokemon")
+        }
     }
 }
