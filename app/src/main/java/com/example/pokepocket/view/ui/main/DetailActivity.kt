@@ -167,8 +167,6 @@ class DetailActivity : AppCompatActivity(), SensorEventListener {
         if (random == 1) {
             val dialog = PokemonPopupFragment()
             dialog.show(supportFragmentManager,"got pokemon")
-            iv_catch.visibility = View.GONE
-            tv_numberOfBalls.visibility = View.GONE
         }else{
             val dialogFailed = PokemonPopupFragmentFailed()
             dialogFailed.show(supportFragmentManager,"failed pokemon")
@@ -214,10 +212,5 @@ class DetailActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         return
-    }
-
-    override fun onDestroy() {
-        sensorManager.unregisterListener(this)
-        super.onDestroy()
     }
 }
