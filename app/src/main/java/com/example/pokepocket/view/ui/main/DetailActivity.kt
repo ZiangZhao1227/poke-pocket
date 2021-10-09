@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -144,6 +145,7 @@ class DetailActivity : AppCompatActivity(), SensorEventListener {
 
         iv_catch.setOnClickListener {
             if(numberOfBalls> 0){
+                it.startAnimation(AnimationUtils.loadAnimation(this, R.anim.animation_item))
                 successFailed()
                 numberOfBalls--
                 tv_numberOfBalls.text = numberOfBalls.toString()
