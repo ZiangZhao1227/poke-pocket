@@ -167,7 +167,7 @@ class DetailActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun successFailed() {
-        val random: Int = Random().nextInt(2)
+        val random: Int = Random().nextInt(4)
         if (random == 1) {
             val dialog = PokemonPopupFragment()
             dialog.show(supportFragmentManager,"got pokemon")
