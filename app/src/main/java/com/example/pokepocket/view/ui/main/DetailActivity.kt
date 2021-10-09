@@ -8,7 +8,6 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -144,11 +143,16 @@ class DetailActivity : AppCompatActivity(), SensorEventListener {
         viewModel.fetchPokemonDetails(nameFromMainActivity)
 
         iv_catch.setOnClickListener {
-            successFailed()
-            numberOfBalls--
-            tv_numberOfBalls.text = numberOfBalls.toString()
-            saveData(numberOfBalls)
+            if(numberOfBalls> 0){
+                successFailed()
+                numberOfBalls--
+                tv_numberOfBalls.text = numberOfBalls.toString()
+                saveData(numberOfBalls)
+            }else{
+                Toast.makeText(this,"Please get more poke balls",Toast.LENGTH_SHORT).show()
+            }
         }
+
         pokemon_image.setOnClickListener {
             Log.d("image","clicked")
             setUpSensorStuff()
