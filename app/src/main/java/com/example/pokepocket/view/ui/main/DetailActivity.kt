@@ -38,7 +38,7 @@ class DetailActivity : AppCompatActivity(), SensorEventListener {
     private val viewModel: DetailActivityViewModel by viewModels {
         viewmodelFactory
     }
-    private var numberOfBalls:Int = 0
+    private var numberOfBalls: Int = 0
     private lateinit var sensorManager: SensorManager
     private lateinit var image: ImageView
 
@@ -51,8 +51,8 @@ class DetailActivity : AppCompatActivity(), SensorEventListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        val sharedPreference =  getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
-        numberOfBalls = sharedPreference.getInt("value",0)
+        val sharedPreference = getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+        numberOfBalls = sharedPreference.getInt("value", 0)
         tv_numberOfBalls.text = numberOfBalls.toString()
 
         supportActionBar?.elevation = 0f
@@ -61,7 +61,6 @@ class DetailActivity : AppCompatActivity(), SensorEventListener {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         image = pokemon_image
-
 
 
         val intent: Intent = intent
@@ -77,7 +76,7 @@ class DetailActivity : AppCompatActivity(), SensorEventListener {
                     .intoCallBack { palette ->
                         val rgb = palette?.dominantSwatch?.rgb
                         if (rgb != null) {
-                            if(!resources.getBoolean(R.bool.is_tablet)){
+                            if (!resources.getBoolean(R.bool.is_tablet)) {
                                 pokemon_image_layout.setBackgroundColor(rgb)
                             }
                             changeColor(rgb)
@@ -88,17 +87,17 @@ class DetailActivity : AppCompatActivity(), SensorEventListener {
         pokemon_name.text = nameFromMainActivity
 
         viewModel.pokemonInfoData.observe(this, { viewState ->
-            when(viewState){
+            when (viewState) {
                 is Success -> {
                     detail_progress_bar.hide()
                     val pokemonInfo = viewState.data
-                    if(pokemonInfo.types.size == 1) {
+                    if (pokemonInfo.types.size == 1) {
                         type_name_one.show()
                         type_name_one.text = pokemonInfo.types[0].type.name
                         type_name_one.setBackgroundColor(getColor(pokemonInfo.types[0].type.name.getTypeColor()))
 
                         type_name_two.hide()
-                    }else {
+                    } else {
                         type_name_one.show()
                         type_name_one.text = pokemonInfo.types[0].type.name
                         type_name_one.setBackgroundColor(getColor(pokemonInfo.types[0].type.name.getTypeColor()))
@@ -144,27 +143,27 @@ class DetailActivity : AppCompatActivity(), SensorEventListener {
         viewModel.fetchPokemonDetails(nameFromMainActivity)
 
         iv_catch.setOnClickListener {
-            if(numberOfBalls> 0){
+            if (numberOfBalls > 0) {
                 it.startAnimation(AnimationUtils.loadAnimation(this, R.anim.animation_item))
                 successFailed()
                 numberOfBalls--
                 tv_numberOfBalls.text = numberOfBalls.toString()
                 saveData(numberOfBalls)
-            }else{
-                Toast.makeText(this,"Please get more poke balls",Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Please get more poke balls", Toast.LENGTH_SHORT).show()
             }
         }
 
         pokemon_image.setOnClickListener {
-            Log.d("image","clicked")
+            Log.d("image", "clicked")
             setUpSensorStuff()
         }
     }
 
-    private fun saveData(value:Int) {
-        val sharedPreference =  getSharedPreferences("PREFERENCE_NAME",Context.MODE_PRIVATE)
+    private fun saveData(value: Int) {
+        val sharedPreference = getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
         val editor = sharedPreference.edit()
-        editor.putInt("value",value)
+        editor.putInt("value", value)
         editor.apply()
     }
 
@@ -172,10 +171,10 @@ class DetailActivity : AppCompatActivity(), SensorEventListener {
         val random: Int = Random().nextInt(4)
         if (random == 1) {
             val dialog = PokemonPopupFragment()
-            dialog.show(supportFragmentManager,"got pokemon")
-        }else{
+            dialog.show(supportFragmentManager, "got pokemon")
+        } else {
             val dialogFailed = PokemonPopupFragmentFailed()
-            dialogFailed.show(supportFragmentManager,"failed pokemon")
+            dialogFailed.show(supportFragmentManager, "failed pokemon")
         }
     }
 

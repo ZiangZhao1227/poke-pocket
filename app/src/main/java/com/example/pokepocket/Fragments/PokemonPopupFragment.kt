@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.pokepocket.R
 import kotlinx.android.synthetic.main.fragment_pokemon_popup.view.*
 
-class PokemonPopupFragment: DialogFragment() {
+class PokemonPopupFragment : DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -2,7 +2,6 @@ package com.example.pokepocket.view.ui.main
 
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Color
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Toast
@@ -24,11 +23,11 @@ import com.example.pokepocket.viewstate.Loading
 import com.example.pokepocket.viewstate.Success
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item_pokemon_list.*
 
 class MainActivity : AppCompatActivity(), ConnReceiver.ConnReceiverListener {
     // Using by lazy so the database and the repository are only created when they're needed rather than when the application starts
     private val viewmodelFactory by lazy { MainActivityViewModelFactory(this) }
+
     //create viewModel by using viewModels delegate, passing in an instance of our viewModelFactory.
     private val viewModel: MainActivityViewModel by viewModels {
         viewmodelFactory
@@ -38,9 +37,9 @@ class MainActivity : AppCompatActivity(), ConnReceiver.ConnReceiverListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //
+
         registerReceiver(ConnReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-    //to display how many Pokemons will display in one raw
+        //to display how many Pokemons will display in one raw
         val pokemonList: RecyclerView = findViewById(R.id.pokemon_recycler_view)
         pokemonList.layoutManager = GridLayoutManager(this, 2)
 
@@ -66,9 +65,10 @@ class MainActivity : AppCompatActivity(), ConnReceiver.ConnReceiverListener {
             }
 
         })
+
         changeColor(getColor(R.color.pokemon_submain))
 
-        floating_action_button.setOnClickListener{
+        floating_action_button.setOnClickListener {
             val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
@@ -91,11 +91,19 @@ class MainActivity : AppCompatActivity(), ConnReceiver.ConnReceiverListener {
     }
 
     private fun showNetworkMsg(isConnected: Boolean) {
-        if (isConnected){
-            snackbar = Snackbar.make(this.findViewById(android.R.id.content) , "You are online" , Snackbar.LENGTH_LONG)
+        if (isConnected) {
+            snackbar = Snackbar.make(
+                this.findViewById(android.R.id.content),
+                "You are online",
+                Snackbar.LENGTH_LONG
+            )
             snackbar.show()
-        }else{
-            snackbar = Snackbar.make(this.findViewById(android.R.id.content) , "You are offline" , Snackbar.LENGTH_LONG)
+        } else {
+            snackbar = Snackbar.make(
+                this.findViewById(android.R.id.content),
+                "You are offline",
+                Snackbar.LENGTH_LONG
+            )
             snackbar.show()
         }
     }
@@ -109,6 +117,4 @@ class MainActivity : AppCompatActivity(), ConnReceiver.ConnReceiverListener {
         super.onDestroy()
         stopService()
     }
-
-
 }

@@ -8,7 +8,7 @@ import com.example.pokepocket.viewstate.ViewState
 
 class DetailActivityViewModel(private val detailRepository: DetailRepository) : ViewModel() {
 
-    val pokemonInfoData : LiveData<ViewState<PokemonInfo>> = detailRepository.pokemonDetailsLiveData
+    val pokemonInfoData: LiveData<ViewState<PokemonInfo>> = detailRepository.pokemonDetailsLiveData
 
 
     fun fetchPokemonDetails(name: String) {

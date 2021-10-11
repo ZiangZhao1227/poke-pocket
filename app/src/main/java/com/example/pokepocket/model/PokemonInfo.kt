@@ -27,7 +27,7 @@ data class PokemonInfo(
     }
 
     fun getAttack(): Int {
-        attack = Random.nextInt(0,maxAttack)
+        attack = Random.nextInt(0, maxAttack)
         return attack!!
     }
 
@@ -36,12 +36,12 @@ data class PokemonInfo(
         return defense!!
     }
 
-    fun getSpeed() : Int{
-        speed = Random.nextInt(0,maxSpeed)
+    fun getSpeed(): Int {
+        speed = Random.nextInt(0, maxSpeed)
         return speed!!
     }
 
-    fun getExp() : Int{
+    fun getExp(): Int {
         exp = Random.nextInt(0, maxExp)
         return exp!!
     }

@@ -16,30 +16,33 @@ import com.example.pokepocket.model.Pokemon
 import com.example.pokepocket.view.ui.main.DetailActivity
 import com.example.pokepocket.view.ui.main.MainActivity
 import kotlinx.android.synthetic.main.item_pokemon_list.view.*
+
 /*use Glide palette from florent37 library to change pokemon's background color(Card view) based on those Pokemon's dominant color
 and use Glide for fetching,decoding,and displaying images to make scrolling in a smoother and faster way*/
-class PokemonListItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
-    fun bindView(pokemonModel : Pokemon){
+class PokemonListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun bindView(pokemonModel: Pokemon) {
         itemView.pokemon_name_text_view.text = pokemonModel.name
         Glide.with(itemView.context).load(pokemonModel.getImageUrl())
             .listener(GlidePalette.with(pokemonModel.getImageUrl())
-                    .use(BitmapPalette.Profile.MUTED_DARK)
-                    .intoCallBack { palette ->
-                        val rgb = palette?.dominantSwatch?.rgb
-                        if (rgb != null) {
-                            itemView.cardView.setBackgroundColor(rgb)
-                        }
+                .use(BitmapPalette.Profile.MUTED_DARK)
+                .intoCallBack { palette ->
+                    val rgb = palette?.dominantSwatch?.rgb
+                    if (rgb != null) {
+                        itemView.cardView.setBackgroundColor(rgb)
                     }
-                    .crossfade(true))
+                }
+                .crossfade(true))
             .into(itemView.pokemon_image_view)
     }
 }
 
-class PokemonListAdapter(private val mainActivity: MainActivity) : RecyclerView.Adapter<PokemonListItemViewHolder>(){
+class PokemonListAdapter(private val mainActivity: MainActivity) :
+    RecyclerView.Adapter<PokemonListItemViewHolder>() {
     private var listOfPokemons = listOf<Pokemon>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonListItemViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_pokemon_list, parent, false)
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_pokemon_list, parent, false)
         return PokemonListItemViewHolder(itemView)
     }
 
@@ -70,7 +73,7 @@ class PokemonListAdapter(private val mainActivity: MainActivity) : RecyclerView.
     }
 
 
-    fun setPokemonList(listOfPokemons : List<Pokemon>){
+    fun setPokemonList(listOfPokemons: List<Pokemon>) {
         this.listOfPokemons = listOfPokemons
         notifyDataSetChanged()
     }

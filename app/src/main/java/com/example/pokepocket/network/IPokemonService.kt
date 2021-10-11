@@ -10,7 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-fun createPokemonService() : IPokemonService {
+fun createPokemonService(): IPokemonService {
 //use OkHttpClient to create Retrofit instance
     val okHttpClient = OkHttpClient
         .Builder()
@@ -29,12 +29,13 @@ fun createPokemonService() : IPokemonService {
 interface IPokemonService {
     @GET("pokemon")
     fun fetchPokemonList(
-        @Query("limit") limit: Int = 30,
+        @Query("limit") limit: Int = 500,
         @Query("offset") offset: Int = 0
     ): Call<PokemonResponse>  //return the data that is expected from the server wrapped it into a typed Retrofit Call< > class.
 
     @GET("pokemon/{name}")
     fun fetchPokemonDetails(
         @Path("name")
-        name : String) : Call<PokemonInfo>
+        name: String
+    ): Call<PokemonInfo>
 }

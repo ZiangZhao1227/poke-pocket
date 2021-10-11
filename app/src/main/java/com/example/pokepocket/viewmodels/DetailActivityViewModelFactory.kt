@@ -7,7 +7,7 @@ import com.example.pokepocket.network.createPokemonService
 import com.example.pokepocket.repository.DetailRepository
 import java.lang.IllegalArgumentException
 
-class DetailActivityViewModelFactory : ViewModelProvider.Factory{
+class DetailActivityViewModelFactory : ViewModelProvider.Factory {
     /**
      * Creates a new instance of the given `Class`.
      *
@@ -18,7 +18,7 @@ class DetailActivityViewModelFactory : ViewModelProvider.Factory{
      * @return a newly created ViewModel
     </T> */
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(DetailActivityViewModel::class.java)){
+        if (modelClass.isAssignableFrom(DetailActivityViewModel::class.java)) {
             return DetailActivityViewModel(DetailRepository(createPokemonService())) as T
         }
         throw IllegalArgumentException("Unknown view model class")

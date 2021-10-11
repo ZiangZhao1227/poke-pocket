@@ -8,14 +8,15 @@ import androidx.fragment.app.DialogFragment
 import com.example.pokepocket.R
 import kotlinx.android.synthetic.main.fragment_pokemon_popup.view.*
 
-class PokemonPopupFragmentFailed: DialogFragment() {
+class PokemonPopupFragmentFailed : DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val rootView: View = inflater.inflate(R.layout.fragment_pokemon_popup_failed, container, false)
+        val rootView: View =
+            inflater.inflate(R.layout.fragment_pokemon_popup_failed, container, false)
         rootView.btn_receive.setOnClickListener {
             dismiss()
         }

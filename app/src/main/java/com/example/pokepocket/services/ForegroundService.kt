@@ -9,9 +9,6 @@ import com.example.pokepocket.view.ui.main.MainActivity
 
 
 class ForegroundService : Service() {
-    override fun onCreate() {
-        super.onCreate()
-    }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val input = intent.getStringExtra("inputExtra")
@@ -31,10 +28,6 @@ class ForegroundService : Service() {
         //do heavy work on a background thread
         //stopSelf();
         return START_NOT_STICKY
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
 

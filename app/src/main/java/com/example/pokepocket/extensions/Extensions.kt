@@ -18,8 +18,8 @@ fun View.hide() {
     visibility = View.GONE
 }
 
-fun String.getTypeColor():Int {
-    return when (this){
+fun String.getTypeColor(): Int {
+    return when (this) {
         "fighting" -> R.color.fighting
         "flying" -> R.color.flying
         "poison" -> R.color.poison

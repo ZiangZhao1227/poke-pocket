@@ -9,18 +9,18 @@ import com.example.pokepocket.model.Pokemon
 interface PokemonDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertPokemons(pokemons : List<Pokemon>)
+    fun insertPokemons(pokemons: List<Pokemon>)
 
     @Update
-    fun updatePokemon(pokemon : Pokemon)
+    fun updatePokemon(pokemon: Pokemon)
 
     @Delete
-    fun deletePokemon(pokemon : Pokemon)
+    fun deletePokemon(pokemon: Pokemon)
 
     @Query("SELECT * FROM Pokemon WHERE name == :name")
-    fun getPokemonByName(name :  String) : LiveData<List<Pokemon>>
+    fun getPokemonByName(name: String): LiveData<List<Pokemon>>
 
     @Query("SELECT * FROM Pokemon")
-    fun getPokemons() : List<Pokemon>
+    fun getPokemons(): List<Pokemon>
 
 }
