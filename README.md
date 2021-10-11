@@ -1,5 +1,6 @@
 # PokePocket [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 PokePocket application is based on the Kotlin language and will call the Pokemon API to display information about all the pokemon. Each pokemon's background color based on the dominant color of the pokemon in a particular view. We are also implementing a map feature where users can catch pokemon by collecting pokemon balls on the map. We will also develop an AR feature where users can interact with the poke balls on the map.
+
 ## Tech stack & Open-source libraries
 - Minimum SDK level 24
 - [Kotlin](https://kotlinlang.org/) based, [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
@@ -26,6 +27,9 @@ PokePocket is based on MVVM architecture and a repository pattern.
 
 ![architecture](https://user-images.githubusercontent.com/24237865/77502018-f7d36000-6e9c-11ea-92b0-1097240c8689.png)
 
+## App preview
+<img src="https://user-images.githubusercontent.com/56063269/136838912-a928a71d-96be-4206-a37f-1901294eff58.png" width="300"> <img src="https://user-images.githubusercontent.com/56063269/136839892-dde5036c-f454-42c3-9848-2787afaaf81d.png" width="300"> <img src="https://user-images.githubusercontent.com/56063269/136839960-827fa4eb-1f53-41fa-ac77-dbf70c8ae21a.png" width="300"> <img src="https://user-images.githubusercontent.com/56063269/136841299-11a5ec19-6b64-432f-bbc3-534766736274.png" width="300">
+
 ## Open API
 
 <img src="https://user-images.githubusercontent.com/24237865/83422649-d1b1d980-a464-11ea-8c91-a24fdf89cd6b.png" align="right" width="21%"/>
@@ -48,5 +52,8 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+
+
 
 
