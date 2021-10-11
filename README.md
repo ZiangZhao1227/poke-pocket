@@ -1,4 +1,4 @@
-# PokePocket
+# PokePocket [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 PokePocket application is based on the Kotlin language and will call the Pokemon API to display information about all the pokemon. Each pokemon's background color based on the dominant color of the pokemon in a particular view. We are also implementing a map feature where users can catch pokemon by collecting pokemon balls on the map. We will also develop an AR feature where users can interact with the poke balls on the map.
 ## Tech stack & Open-source libraries
 - Minimum SDK level 24
@@ -32,3 +32,5 @@ PokePocket is based on MVVM architecture and a repository pattern.
 
 PokePocket using the [PokeAPI](https://pokeapi.co/) for constructing RESTful API.<br>
 PokeAPI provides a RESTful API interface to highly detailed objects built from thousands of lines of data related to Pokémon.
+
+
