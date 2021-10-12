@@ -80,6 +80,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.8'
 
     //AR
-    "com.gorisse.thomas.sceneform:sceneform:1.19.6"
+    implementation  'com.gorisse.thomas.sceneform:sceneform:1.19.6'
+    implementation  'com.google.ar:core:1.27.0'
 
 }

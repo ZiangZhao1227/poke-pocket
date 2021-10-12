@@ -36,4 +36,6 @@
     <string name="congrats">Congratulations! You have successfully caught it!</string>
     <string name="try_again">Try again</string>
     <string name="oops">Oops! pokemon escaped this time please try again!</string>
+    <string name="return_to_map">Return to the map</string>
+    <string name="show_pokeball">Show the Pokeball</string>
 </resources>

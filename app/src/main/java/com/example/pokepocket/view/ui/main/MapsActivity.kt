@@ -2,6 +2,7 @@ package com.example.pokepocket.view.ui.main
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -306,6 +307,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 Toast.makeText(this@MapsActivity, "How nice", Toast.LENGTH_SHORT)
                                     .show()
                             } else if (0.0 < distanceBetweenPokeAndPlayer && distanceBetweenPokeAndPlayer < 35.0) {
+                                val intent = Intent(this@MapsActivity, ArActivity::class.java)
+                                startActivity(intent)
                                 Toast.makeText(
                                     this@MapsActivity,
                                     "Got a Poké Ball",
