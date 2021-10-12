@@ -1,6 +1,10 @@
 # PokePocket [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 PokePocket application is based on the Kotlin language and will call the Pokemon API to display information about all the pokemon. Each pokemon's background color based on the dominant color of the pokemon in a particular view. We are also implementing a map feature where users can catch pokemon by collecting pokemon balls on the map. We will also develop an AR feature where users can interact with the poke balls on the map.
 
+## If you want to run this app.
+- You need to generate your own Google API Key in order to use the Google Maps feature, all you need to do is go to (https://console.cloud.google.com/home), log in or create a Gmail account and follow the instructions there.
+- Also you need to install Google Play Services, you can find it by going to SDK Manager and selecting SDK tools in Android Studio, it will show the list of tools that u can install, scroll to find it.
+
 ## Tech stack & Open-source libraries
 - Minimum SDK level 24
 - [Kotlin](https://kotlinlang.org/) based, [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
