@@ -53,7 +53,7 @@ class ArActivity : AppCompatActivity() {
         ModelRenderable.builder()
             .setSource(
                 this,
-                Uri.parse("https://github.com/ZiangZhao1227/poke_pocket/tree/ar/app/src/main/java/com/example/pokepocket/3d/pokeball_red.gltf")
+                Uri.parse("https://github.com/ZiangZhao1227/poke_pocket/tree/ar/app/src/main/java/com/example/pokepocket/3d/pokeball.gltf")
             )
             .setIsFilamentGltf(true)
             .setAsyncLoadEnabled(true)
