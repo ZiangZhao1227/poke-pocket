@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.example.pokepocket.R
 import com.google.ar.core.Plane
 import com.google.ar.sceneform.AnchorNode
@@ -64,6 +65,11 @@ class ArActivity : AppCompatActivity() {
                 Log.e(ContentValues.TAG, "something went wrong ${it.localizedMessage}")
                 null
             }
+        Toast.makeText(
+            this,
+            "Move around the phone, until you see the field where to place the Pokeball",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
 
