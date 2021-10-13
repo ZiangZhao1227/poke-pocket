@@ -53,11 +53,11 @@ class ArActivity : AppCompatActivity() {
         ModelRenderable.builder()
             .setSource(
                 this,
-                Uri.parse("https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/CesiumMan/glTF/CesiumMan.gltf")
+                Uri.parse("https://github.com/ZiangZhao1227/poke_pocket/raw/main/app/src/main/java/com/example/pokepocket/armodel/pokeball.gltf")
             )
             .setIsFilamentGltf(true)
             .setAsyncLoadEnabled(true)
-            .setRegistryId("CesiumMan")
+            .setRegistryId("pokeball")
             .build()
             .thenAccept { modelRenderable = it }
             .exceptionally {
@@ -95,5 +95,4 @@ class ArActivity : AppCompatActivity() {
             }
         }
     }
-
 }
