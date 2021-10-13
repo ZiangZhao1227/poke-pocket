@@ -196,7 +196,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setMarkerOnRandomLocations(map: GoogleMap) {
-        for (i in 0..9) {
+        for (i in 0..4) {
             map.addMarker(
                 MarkerOptions().position(
                     getRandomLocation(
@@ -286,6 +286,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 "generating nearby poke balls",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            show_pokemonBalls.visibility = View.INVISIBLE
                         }
                         // Add a marker for player's location
                         val plrLocation =
