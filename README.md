@@ -32,7 +32,8 @@ PokePocket is based on MVVM architecture and a repository pattern.
 ![architecture](https://user-images.githubusercontent.com/24237865/77502018-f7d36000-6e9c-11ea-92b0-1097240c8689.png)
 
 ## App preview
-<img src="https://user-images.githubusercontent.com/56063269/136838912-a928a71d-96be-4206-a37f-1901294eff58.png" width="230"> <img src="https://user-images.githubusercontent.com/56063269/136839892-dde5036c-f454-42c3-9848-2787afaaf81d.png" width="230"> <img src="https://user-images.githubusercontent.com/56063269/136839960-827fa4eb-1f53-41fa-ac77-dbf70c8ae21a.png" width="230"> <img src="https://user-images.githubusercontent.com/56063269/136841299-11a5ec19-6b64-432f-bbc3-534766736274.png" width="230">
+<img src="https://user-images.githubusercontent.com/56063269/136838912-a928a71d-96be-4206-a37f-1901294eff58.png" width="230"> <img src="https://user-images.githubusercontent.com/56063269/136839892-dde5036c-f454-42c3-9848-2787afaaf81d.png" width="230"> <img src="https://user-images.githubusercontent.com/56063269/136839960-827fa4eb-1f53-41fa-ac77-dbf70c8ae21a.png" width="230"> <img src="https://user-images.githubusercontent.com/56063269/136841299-11a5ec19-6b64-432f-bbc3-534766736274.png" width="230"> <img src="https://user-images.githubusercontent.com/56063269/137172667-08c5fc96-8d4f-41e1-810c-a7df15382398.jpg" width="230">
+
 
 ## Open API
 
