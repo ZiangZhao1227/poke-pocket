@@ -3,6 +3,7 @@ PokePocket application is based on the Kotlin language and will call the Pokemon
 
 ## If you want to run this app
 - Clone the repo https://github.com/ZiangZhao1227/poke_pocket.git
+- Open project with Android Studio
 - You need to generate your own Google API Key in order to use the Google Maps feature, all you need to do is go to [for Google API Key](https://console.cloud.google.com/home), log in or create a Gmail account and follow the instructions there.
 - Also you need to install Google Play Services, you can find it by going to SDK Manager and selecting SDK tools in Android Studio, it will show the list of tools that u can install, scroll to find it.
 
@@ -50,6 +51,9 @@ PokePocket is based on MVVM architecture and a repository pattern.
 
 PokePocket using the [PokeAPI](https://pokeapi.co/) for constructing RESTful API.<br>
 PokeAPI provides a RESTful API interface to highly detailed objects built from thousands of lines of data related to Pokémon.
+
+## Presentation Link
+[Presentation](https://www.canva.com/design/DAEsyyibrI8/ftVNtKb5CDS8SPNwWMKDkQ/view?utm_content=DAEsyyibrI8&utm_campaign=designshare&utm_medium=link&utm_source=sharebutton)
 
 # License
 ```xml
