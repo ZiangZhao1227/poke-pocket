@@ -2,6 +2,7 @@
 PokePocket application is based on the Kotlin language and will call the Pokemon API to display information about all the pokemon. Each pokemon's background color based on the dominant color of the pokemon in a particular view. We are also implementing a map feature where users can catch pokemon by collecting pokemon balls on the map. We will also develop an AR feature where users can interact with the poke balls on the map.
 
 ## If you want to run this app
+- Clone the repo
 - You need to generate your own Google API Key in order to use the Google Maps feature, all you need to do is go to [for Google API Key](https://console.cloud.google.com/home), log in or create a Gmail account and follow the instructions there.
 - Also you need to install Google Play Services, you can find it by going to SDK Manager and selecting SDK tools in Android Studio, it will show the list of tools that u can install, scroll to find it.
 
@@ -17,13 +18,21 @@ PokePocket application is based on the Kotlin language and will call the Pokemon
   - MVVM Architecture (View - DataBinding - ViewModel - Model)
   - Repository pattern
 - [Retrofit2 & OkHttp3](https://github.com/square/retrofit) - construct the REST APIs and paging network data.
-- [Sandwich](https://github.com/skydoves/Sandwich) - construct lightweight http API response and handling error responses.
 - [Moshi](https://github.com/square/moshi/) - A modern JSON library for Kotlin and Java.
 - [Glide](https://github.com/bumptech/glide), [GlidePalette](https://github.com/florent37/GlidePalette) - loading images.
 - [TransformationLayout](https://github.com/skydoves/transformationlayout) - implementing transformation motion animations.
 - [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.
 - Custom Views
   - [ProgressView](https://github.com/skydoves/progressview) - A polished and flexible ProgressView, fully customizable with animations.
+- Internal sensor - accelerometer
+- Follow material design guidelines recommendation
+-  Accessibility checked 
+-  Fragments
+-  Use 3 out of 4 basic components - activity, broadcast receiver, service
+-  Have AR related functionality
+-  GoogleMap API
+
+
 
 
 ## Architecture
