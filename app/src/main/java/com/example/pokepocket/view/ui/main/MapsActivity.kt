@@ -45,7 +45,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var currentPlayerLatitude = 0.0
     private var currentPlayerLongtitude = 0.0
     private var numberOfBalls: Int = 0
-    private var listOfMarker: ArrayList<LatLng> = ArrayList()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -191,7 +191,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val newX = x / cos(Math.toRadians(y0))
         val foundLongitude = newX + x0
         val foundLatitude = y + y0
-        listOfMarker.add(LatLng(foundLongitude, foundLatitude))
         return LatLng(foundLongitude, foundLatitude)
     }
 
@@ -279,6 +278,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 try {
                     runOnUiThread {
                         show_pokemonBalls.visibility = View.VISIBLE
+                        go_home.visibility = View.VISIBLE
                         show_pokemonBalls.setOnClickListener {
                             setMarkerOnRandomLocations(mMap)
                             Toast.makeText(
@@ -288,6 +288,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             ).show()
                             show_pokemonBalls.visibility = View.INVISIBLE
                         }
+
+                        go_home.setOnClickListener {
+                            val intent = Intent(this@MapsActivity, MainActivity::class.java)
+                            startActivity(intent)
+                        }
+
                         // Add a marker for player's location
                         val plrLocation =
                             LatLng(playerLocation!!.latitude, playerLocation!!.longitude)
@@ -306,21 +312,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             CircleOptions()
                                 .center(plrLocation)
                                 .strokeColor(R.color.pokemon_submain)
-                                .radius(5.0)
+                                .radius(15.0)
                         )
-
-                        listOfMarker.forEach {
-                            val distanceBetweenPokeAndPlayer = distance(plrLocation, it)
-                            if (0.0 < distanceBetweenPokeAndPlayer && distanceBetweenPokeAndPlayer < 5.0) {
-                                show_AR.visibility = View.VISIBLE
-                                show_AR.setOnClickListener {
-                                    val intent = Intent(this@MapsActivity, ArActivity::class.java)
-                                    startActivity(intent)
-                                }
-                            } else {
-                                show_AR.visibility = View.INVISIBLE
-                            }
-                        }
 
                         mMap.setOnMarkerClickListener {
                             Log.d("marker", "${it.position}")
@@ -329,20 +322,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             if (distanceBetweenPokeAndPlayer == 0.0) {
                                 Toast.makeText(this@MapsActivity, "How nice", Toast.LENGTH_SHORT)
                                     .show()
-                            } else if (0.0 < distanceBetweenPokeAndPlayer && distanceBetweenPokeAndPlayer < 5.0) {
-                                Toast.makeText(
-                                    this@MapsActivity,
-                                    "Got a Poké Ball",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                            } else if (0.0 < distanceBetweenPokeAndPlayer && distanceBetweenPokeAndPlayer < 15.0) {
+                                val intent = Intent(this@MapsActivity, ArActivity::class.java)
+                                startActivity(intent)
                                 numberOfBalls++
                                 saveData(numberOfBalls)
                                 tv_numbers.text = numberOfBalls.toString()
                                 it.remove()
-                            } else if (distanceBetweenPokeAndPlayer > 5.0) {
+                            } else if (distanceBetweenPokeAndPlayer > 15.0) {
                                 Toast.makeText(
                                     this@MapsActivity,
-                                    "Try to get closer about ${(distanceBetweenPokeAndPlayer - 5.0).toFloat()} meters",
+                                    "Try to get closer about ${(distanceBetweenPokeAndPlayer - 15.0).toFloat()} meters",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {

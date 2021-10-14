@@ -39,11 +39,6 @@ class ArActivity : AppCompatActivity() {
             add3dObject()
         }
 
-        my_btn_map.setOnClickListener {
-            val intent = Intent(this@ArActivity, MapsActivity::class.java)
-            startActivity(intent)
-        }
-
         arFrag = supportFragmentManager.findFragmentById(R.id.sceneform_fragment) as ArFragment
 
         StrictMode.setThreadPolicy(
@@ -72,7 +67,6 @@ class ArActivity : AppCompatActivity() {
         ).show()
     }
 
-
     private fun add3dObject() {
         val frame = arFrag.arSceneView.arFrame
         if (frame != null && modelRenderable != null) {
@@ -88,7 +82,15 @@ class ArActivity : AppCompatActivity() {
                     anchorNode.setParent(arFrag.arSceneView.scene)
                     val mNode = TransformableNode(arFrag.transformationSystem)
                     mNode.setOnTapListener { hitTestResult, motionEvent ->
-                        my_btn.visibility = View.VISIBLE
+                        Toast.makeText(
+                            this,
+                            "Got a Poké Ball",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(this@ArActivity, MapsActivity::class.java)
+                        startActivity(intent)
+
                     }
                     mNode.scaleController.minScale = 0.05f
                     mNode.scaleController.maxScale = 2.0f
